@@ -1,0 +1,185 @@
+/* General styles */
+body {
+  background-color: #ededff;
+  min-height: 100vh;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* Navbar container */
+nav {
+  background-color: #1f1f1f;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: center; /* Horizontal center */
+  align-items: center;      /* Vertical center */
+}
+
+/* Navbar list */
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center; /* Vertically center list items */
+  gap: 20px;
+}
+
+/* Navbar list items */
+nav li {
+  display: flex;
+  align-items: center;
+}
+
+/* Navbar links */
+nav a {
+  display: flex;
+  align-items: center;
+  color: #bdbdf0;
+  text-decoration: none;
+  padding: 10px 12px;
+  font-size: 16px;
+}
+
+/* Hover effect */
+nav a:hover {
+  color: #671bda;
+}
+
+/* Logo image */
+nav img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+
+/* Headings */
+h1 {
+  color: #671bda;
+  padding-left: 25px;
+}
+
+h2 {
+  color: #1f1f1f;
+  padding-left: 25px;
+}
+
+/* Calendar section */
+.calendar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40vh;
+  color: #1f1f1f;
+}
+
+.wrapper {
+  width: 735px;
+  background: #fff;
+  border-radius: 10px;
+  transform: scale(1.05);
+  transform-origin: top center;
+  padding-bottom: 20px;
+}
+
+
+.wrapper header {
+  display: flex;
+  align-items: center;
+  padding: 25px 30px 10px;
+  justify-content: space-between;
+}
+
+header .current-date {
+  font-size: 2rem;
+  font-weight: 500;
+}
+
+header .icons span {
+  height: 38px;
+  width: 38px;
+  margin: 0 1px;
+  cursor: pointer;
+  text-align: center;
+  line-height: 38px;
+  border-radius: 50%;
+  background: #f2f2f2;
+  display: inline-block;
+  font-size: 24px;
+  user-select: none;
+}
+
+header .icons span:last-child {
+  margin-right: -10px;
+}
+
+/* Weekday headings (Sun, Mon, ...) */
+.daysOfWeek {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); 
+  text-align: center;
+  padding: 0 20px; 
+  margin: 0;
+  list-style: none;
+  font-weight: bold;
+}
+
+
+/* Grid of actual days */
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  padding: 0 20px; 
+  margin: 0;
+  list-style: none;
+  text-align: left;
+}
+
+
+/* Individual day cell */
+.days li {
+  padding: 8px;
+  height: 100px;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  font-size: 16px;
+  flex-direction: column;
+}
+
+.days li span {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 50%;
+}
+
+.days li .dot-highlight {
+    background-color: #955ee8;
+    color: white;
+}
+
+.event {
+  margin-top: 4px;
+}
+
+.event-link {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.75em;
+    color: rgb(150, 29, 206);
+    text-decoration: none;
+}
+
+.event-link:hover {
+    text-decoration: underline;
+}
+
