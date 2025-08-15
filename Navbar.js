@@ -5,7 +5,7 @@ function Navbar() {
   return (
     <div>
       <nav id="navbar">
-        <ul>
+        <ul className="ganji-font">
           <li>
             <a href="#default" style={{ padding: 0 }}>
               <img id="logo" src={logo} alt="Ganji logo" />
