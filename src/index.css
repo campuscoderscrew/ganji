@@ -1,0 +1,101 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: dark;
+  color: #1F1F1F;
+  background-color: #d1d1ff;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+
+body {
+  margin: 0;
+}
+
+h1 {
+  font-size: 5em;
+  line-height: 1;
+  color: #7C36E6;
+  text-align: left;
+  padding: 0;
+}
+
+.call-to-action {
+  font-size: 3em;
+}
+
+.highlight {
+  color: #7C36E6;
+  padding: 0 4px;
+  border-radius: 3px;
+  font-weight: bold;
+  display: inline;
+}
+
+.workshops-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0;
+  padding: 10px 40px;
+  box-sizing: border-box;
+  gap: 20px;
+}
+
+.text-box {
+  max-width: 100%;
+  padding: 0;
+}
+
+.text-content {
+  flex: 0 0 auto;
+  max-width: 53%;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -15px;
+}
+
+.col-md-6 {
+  padding: 0 15px;
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .workshops-container {
+    flex-direction: column;
+  }
+  
+  .text-content {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
