@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Events Page
 
 This page will be designed as an interactive calendar that users can go through just like a standard calendar. 
