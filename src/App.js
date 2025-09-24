@@ -1,139 +1,131 @@
-import React, { useState } from 'react';
-import './events.css';
-import ganjiLogo from './ganjiLogoWhite.png';
+import React, { useState } from 'react'; 
+import './events.css'; 
+import practiceImage from './Chungha.png'; 
+import holdImage from './ComingSoon.png'; 
 
+function EventsPage() { 
+    const months = [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ]; 
+    const [currentDate, setCurrentDate] = useState(new Date()); const [modalData, setModalData] = useState({ title: '', description: '', image: '' }); 
+    const [isModalOpen, setIsModalOpen] = useState(false); 
 
-function EventsPage() {
-    const months = [
-        'January', 'February', 'March', 'April', 'May', 'June',
-        'July', 'August', 'September', 'October', 'November', 'December'
-    ];
+    const handlePrev = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1));
+    const handleNext = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1));
+ 
+    const getDaysInMonth = (year, month) => new Date(year, month + 1, 0).getDate(); 
+    const getStartDayOfWeek = (year, month) => new Date(year, month, 1).getDay(); 
 
-    const [currentDate, setCurrentDate] = useState(new Date());
+    const daysInMonth = getDaysInMonth(currentDate.getFullYear(), currentDate.getMonth()); 
+    const startDay = getStartDayOfWeek(currentDate.getFullYear(), currentDate.getMonth()); 
 
-    // Helper to move to previous month
-    const handlePrev = () => {
-        const prevMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1);
-        setCurrentDate(prevMonth);
-    };
+    const calendarDays = [...Array(startDay).fill(null), ...Array.from({length: daysInMonth}, (_,i)=>i+1)];
+ 
+    const eventMap = { 
+        '2025-09-10': { 
+            label: 'Eenie Meenie', 
+            description: 'Like eenie ☝️meenie☝️minie ☝️moe☝️\n\nCome learn ⭐️❤️EENIE MEENIE by CHUNG HA❤️⭐️ taught by ✨@ije.526✨ THIS THURSDAY ‼️\n\nWORKSHOP DETAILS ‼️\n🗓️: Tuesday, July 1st\n⏰: 7-8PM\n📍: Activities Room near Terpzone (STAMP)', 
+            color: 'purple', 
+            image: practiceImage 
+        }, 
+        '2025-09-16': { 
+            label: 'Practice ?', 
+            description: 'Description text here', 
+            color: 'purple', 
+            image: holdImage 
+        }, 
+        '2025-09-30': {
+            label: 'Practice ?', 
+            description: 'Description text here', 
+            color: 'purple', 
+            image: holdImage 
+        }, 
+        '2025-10-01': {
+            label: 'Practice ?', 
+            description: 'Description text here', 
+            color: 'purple', 
+            image: holdImage 
+        }, 
+    }; 
 
-    // Helper to move to next month
-    const handleNext = () => {
-        const nextMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1);
-        setCurrentDate(nextMonth);
-    };
+    
+    const openModal = (title, description, image) => setModalData({title, description, image}) || setIsModalOpen(true);
 
-    const getDaysInMonth = (year, month) => {
-        return new Date(year, month + 1, 0).getDate();
-    };
+    const closeModal = () => setIsModalOpen(false);
 
-    const getStartDayOfWeek = (year, month) => {
-        return new Date(year, month, 1).getDay(); // 0 = Sunday
-    };
+    return ( 
+    <div className="heading-container">
+      <main>
+        <h1>Events</h1>
+        <h2>
+          Check out all of our events! <br />
+          Click through the months to look at our present and past events. <br />
+          Tap into the event’s banner for more details.
+        </h2>
+      </main>
 
-    const daysInMonth = getDaysInMonth(currentDate.getFullYear(), currentDate.getMonth());
-    const startDay = getStartDayOfWeek(currentDate.getFullYear(), currentDate.getMonth());
+      <section className="calendar">
+        <div className="wrapper">
+          <header>
+            <p className="current-date">
+              {months[currentDate.getMonth()]} {currentDate.getFullYear()}
+            </p>
+            <div className="icons">
+              <span onClick={handlePrev}> &lt; </span>
+              <span onClick={handleNext}> &gt; </span>
+            </div>
+          </header>
 
-    // Generate empty days at start and actual days
-    const calendarDays = [
-        ...Array(startDay).fill(null),
-        ...Array.from({ length: daysInMonth }, (_, i) => i + 1)
-    ];
+          <ul className="daysOfWeek">
+            {['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(d => <li key={d}>{d}</li>)}
+          </ul>
 
-    // Events on the Calendar
-    const eventMap = {
-    '2025-08-10': { label: 'Practice 1', link: '/events/practice', color: 'purple' },
-    '2025-08-16': { label: 'Practice 2', link: '/events/practice', color: 'purple' },
-    '2025-08-30': { label: 'Practice 3', link: '/events/practice', color: 'purple' },
-    '2025-09-01': { label: 'Practice 4', link: '/events/practice', color: 'purple' },
-    };
+          <ul className="days">
+            {calendarDays.map((day, index) => {
+              const dayNumber = day || '';
+              const isToday =
+                dayNumber === new Date().getDate() &&
+                currentDate.getMonth() === new Date().getMonth() &&
+                currentDate.getFullYear() === new Date().getFullYear();
 
-    return (
-        <div>
-            <nav>
-                <ul>
-                    <li>
-                        <a href="about.asp">
-                            <img
-                                src={ganjiLogo}
-                                alt="White Ganji Logo"
-                                style={{ width: '40px', height: '40px' }}
-                            />
-                        </a>
-                    </li>
-                    <li><a href="about.asp">About</a></li>
-                    <li><a href="officers.asp">Officers</a></li>
-                    <li><a href="events.asp">Events</a></li>
-                    <li><a href="workshops.asp">Workshops</a></li>
-                    <li><a href="performances.asp">Performances</a></li>
-                    <li><a href="competitions.asp">Competitions</a></li>
-                    <li><a href="archives.asp">Archives</a></li>
-                </ul>
-            </nav>
+              const formattedDate = day
+                ? `${currentDate.getFullYear()}-${String(currentDate.getMonth()+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`
+                : null;
 
-            <main>
-                <h1>Events</h1>
-                <h2>
-                    Check out all of our events! <br />
-                    Click through the months to look at our present and past events. <br />
-                    Tap into the event’s banner for more details.
-                </h2>
-            </main>
+              const event = formattedDate ? eventMap[formattedDate] : null;
 
-            <section className="calendar">
-                <div className="wrapper">
-                    <header>
-                        <p className="current-date">
-                            {months[currentDate.getMonth()]} {currentDate.getFullYear()}
-                        </p>
-                        <div className="icons">
-                            <span className="materials-symbols-rounded" onClick={handlePrev}> &lt; </span>
-                            <span className="materials-symbols-rounded" onClick={handleNext}> &gt; </span>
-                        </div>
-                    </header>
-
-                    <div className="weekAndDays">
-                        <ul className="daysOfWeek">
-                            <li>Sun</li>
-                            <li>Mon</li>
-                            <li>Tue</li>
-                            <li>Wed</li>
-                            <li>Thu</li>
-                            <li>Fri</li>
-                            <li>Sat</li>
-                        </ul>
-                        <ul className="days">
-                            {calendarDays.map((day, index) => {
-                                const dayNumber = day || '';
-                                const isToday =
-                                    dayNumber === new Date().getDate() &&
-                                    currentDate.getMonth() === new Date().getMonth() &&
-                                    currentDate.getFullYear() === new Date().getFullYear();
-
-                                // Format YYYY-MM-DD
-                                const formattedDate = day
-                                    ? `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
-                                    : null;
-
-                                const event = formattedDate ? eventMap[formattedDate] : null;
-
-                                return (
-                                    <li key={index} className={isToday ? 'today' : ''}>
-                                        {dayNumber}
-                                        {event && (
-                                            <div className="event">
-                                                <a href={event.link} className="event-link">{event.label}</a>
-                                            </div>
-                                        )}
-                                    </li>
-                                );
-                            })}
-                        </ul>
+              return (
+                <li key={index} className={isToday ? 'today' : ''}>
+                  {dayNumber}
+                  {event && <span className="dot-highlight"></span>}
+                  {event && (
+                    <div className="event">
+                      <span className="event-link" onClick={() => openModal(event.label, event.description, event.image)}>
+                        {event.label}
+                      </span>
                     </div>
-                </div>
-            </section>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
         </div>
-    );
+      </section>
+
+      {isModalOpen && (
+        <div className="modal" onClick={e => e.target.className === 'modal' && closeModal()}>
+          <div className="modal-content">
+            <div className="modal-left">
+              <img src={modalData.image} alt={modalData.title} />
+            </div>
+            <div className="modal-right">
+              <span className="close-button" onClick={closeModal}>&times;</span>
+              <h2>{modalData.title}</h2>
+              <p>{modalData.description}</p>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default EventsPage;

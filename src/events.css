@@ -57,12 +57,22 @@ nav img {
 /* Headings */
 h1 {
   color: #671bda;
-  padding-left: 25px;
 }
 
 h2 {
   color: #1f1f1f;
-  padding-left: 25px;
+}
+
+.heading-container {
+  max-width: 800px;   /* same as .calendar or .wrapper */
+  margin: 0 auto;     /* centers it horizontally */
+  padding-left: 0;    /* no extra padding */
+}
+
+.heading-container h1,
+.heading-container h2 {
+  text-align: left;   /* ensure text is left-aligned */
+  padding-left: 0;    /* remove previous padding */
 }
 
 /* Calendar section */
@@ -151,6 +161,7 @@ header .icons span:last-child {
   align-items: flex-start;
   font-size: 16px;
   flex-direction: column;
+  gap: 0px;
 }
 
 .days li span {
@@ -162,24 +173,109 @@ header .icons span:last-child {
     border-radius: 50%;
 }
 
-.days li .dot-highlight {
+.day-number {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  border-radius: 50%;
+}
+
+.today-circle {
     background-color: #955ee8;
     color: white;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
 }
 
 .event {
+  display: inline;
   margin-top: 4px;
 }
 
 .event-link {
-    display: block;
-    margin-top: 4px;
-    font-size: 0.75em;
-    color: rgb(150, 29, 206);
-    text-decoration: none;
+  display: inline;
+  white-space: nowrap;
+  margin-top: 4px;
+  font-size: 0.75em;
+  color: #c877ee;
+  text-decoration: none;
 }
 
 .event-link:hover {
-    text-decoration: underline;
+  color: #aa5ce6;
+  text-decoration: underline;
 }
 
+.modal {
+  display: none; /* This will be toggled in React */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Modal content wrapper */
+.modal-content {
+  display: flex;
+  width: 80%;
+  max-width: 700px;
+  border-radius: 10px;
+  overflow: hidden; /* ensures border-radius works on children */
+  background-color: #fff;
+}
+
+/* Left section: image */
+.modal-left {
+  flex: 1;
+  background-color: #f0f0f0; /* optional fallback */
+}
+
+.modal-left img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Right section: text */
+.modal-right {
+  flex: 1;
+  background-color: #bdbdf0; /* purple background */
+  color: black;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.modal-right h2 {
+  margin-top: 0;
+}
+
+.modal-right p {
+  white-space: pre-line; /* handles \n newlines in description */
+}
+
+/* Close button */
+.close-button {
+  align-self: flex-end;
+  cursor: pointer;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.close-button:hover {
+  color: #ffcccc;
+}
