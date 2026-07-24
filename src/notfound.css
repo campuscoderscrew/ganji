@@ -1,0 +1,147 @@
+.notfound-page {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ededff;
+  overflow: hidden;
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+
+.notfound-dots {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(#bdbdf0 2.5px, transparent 2.5px);
+  background-size: 26px 26px;
+  opacity: 0.8;
+}
+
+.notfound-bubble {
+  position: absolute;
+  z-index: 0;
+  background: linear-gradient(135deg, #b9a3ff 0%, #7c6cf6 30%, #f3a8e0 65%, #a0d8ff 100%);
+  box-shadow:
+    inset -12px -12px 30px rgba(31, 31, 31, 0.15),
+    inset 12px 12px 24px rgba(255, 255, 255, 0.6),
+    0 15px 35px rgba(103, 27, 218, 0.18);
+  filter: saturate(1.15);
+}
+
+.notfound-bubble::after {
+  content: '';
+  position: absolute;
+  top: 14%;
+  left: 18%;
+  width: 30%;
+  height: 22%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.75);
+  filter: blur(2px);
+}
+
+.notfound-bubble-1 {
+  width: 240px;
+  height: 240px;
+  top: -70px;
+  left: -70px;
+  border-radius: 42% 58% 65% 35% / 45% 40% 60% 55%;
+  transform: rotate(-12deg);
+}
+
+.notfound-bubble-2 {
+  width: 280px;
+  height: 280px;
+  bottom: -90px;
+  right: -80px;
+  border-radius: 60% 40% 32% 68% / 55% 62% 38% 45%;
+  transform: rotate(18deg);
+}
+
+.notfound-bubble-3 {
+  width: 90px;
+  height: 90px;
+  top: 62%;
+  left: 6%;
+  border-radius: 55% 45% 60% 40% / 40% 55% 45% 60%;
+  transform: rotate(6deg);
+}
+
+.notfound-sparkle {
+  position: absolute;
+  z-index: 0;
+  color: #c877ee;
+  text-shadow: 0 0 8px rgba(200, 119, 238, 0.5);
+  user-select: none;
+  pointer-events: none;
+}
+
+.notfound-sparkle-1 {
+  top: 12%;
+  right: 14%;
+  font-size: 2.2rem;
+}
+
+.notfound-sparkle-2 {
+  bottom: 18%;
+  left: 12%;
+  font-size: 1.4rem;
+  color: #7c6cf6;
+}
+
+.notfound-sparkle-3 {
+  top: 30%;
+  right: 22%;
+  font-size: 1rem;
+  color: #a0d8ff;
+}
+
+.notfound-card {
+  position: relative;
+  z-index: 1;
+  max-width: 520px;
+  width: 100%;
+  text-align: center;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 48px 40px;
+  box-shadow: 0 10px 30px rgba(103, 27, 218, 0.12);
+}
+
+.notfound-code {
+  margin: 0;
+  font-size: 5rem;
+  font-weight: 800;
+  color: #671bda;
+  line-height: 1;
+}
+
+.notfound-title {
+  margin: 12px 0 8px;
+  color: #1f1f1f;
+  font-size: 1.5rem;
+}
+
+.notfound-home-button {
+  margin-top: 24px;
+  background: linear-gradient(135deg, #7c6cf6 0%, #c877ee 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 999px;
+  padding: 14px 36px;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(124, 108, 246, 0.35);
+  transition: box-shadow 0.2s ease;
+}
+
+.notfound-home-button:hover {
+  box-shadow: 0 10px 26px rgba(200, 119, 238, 0.5);
+}
+
+.notfound-home-button:active {
+  box-shadow: 0 4px 12px rgba(124, 108, 246, 0.4);
+}
