@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './events.css';
+import './pages/events.css';
 import EventsPage from './App.js';
-import NotFoundPage from './NotFoundPage.js';
+import NotFoundPage from './pages/NotFoundPage.js';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
