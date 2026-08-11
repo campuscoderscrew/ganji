@@ -1,0 +1,302 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+/* Reserve the scrollbar's width up front so expanding an accordion month
+   (which can push the page past viewport height) never shifts the
+   centered content sideways when the scrollbar pops in. */
+html {
+  overflow-y: scroll;
+}
+
+.archive-page {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  background: radial-gradient(circle at 20% 0%, #e4ddff 0%, #ededff 45%, #e6e6fb 100%);
+  overflow-x: hidden;
+  font-family: 'Space Grotesk', Arial, sans-serif;
+}
+
+.archive-dots {
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(#c3b8f7 2.5px, transparent 2.5px);
+  background-size: 28px 28px;
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ---------- Bubbles ---------- */
+
+.archive-bubble {
+  position: fixed;
+  z-index: 0;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.archive-bubble-1,
+.archive-bubble-2 {
+  background: linear-gradient(135deg, #b9a3ff 0%, #7c6cf6 30%, #f3a8e0 65%, #a0d8ff 100%);
+  box-shadow:
+    inset -12px -12px 30px rgba(31, 31, 31, 0.15),
+    inset 12px 12px 24px rgba(255, 255, 255, 0.6),
+    0 15px 35px rgba(103, 27, 218, 0.18);
+  filter: saturate(1.15);
+  border-radius: 42% 58% 65% 35% / 45% 40% 60% 55%;
+}
+
+.archive-bubble-1 {
+  width: 280px;
+  height: 280px;
+  top: -80px;
+  left: -80px;
+  transform: rotate(-12deg);
+}
+
+.archive-bubble-2 {
+  width: 320px;
+  height: 320px;
+  bottom: -100px;
+  right: -90px;
+  border-radius: 60% 40% 32% 68% / 55% 62% 38% 45%;
+  transform: rotate(18deg);
+}
+
+/* Foreground glass orbs — float in front of content */
+.archive-bubble-fg-1,
+.archive-bubble-fg-2 {
+  z-index: 5;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.55), rgba(200, 119, 238, 0.25));
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 8px 30px rgba(124, 108, 246, 0.25);
+}
+
+.archive-bubble-fg-1 {
+  width: 150px;
+  height: 150px;
+  top: 8%;
+  right: 12%;
+}
+
+.archive-bubble-fg-2 {
+  width: 80px;
+  height: 80px;
+  top: 30%;
+  left: 8%;
+}
+
+/* Push the foreground orbs clear of the text/cards once the viewport gets
+   too narrow for "right: 12%" / "left: 8%" to stay outside the content. */
+@media (max-width: 900px) {
+  .archive-bubble-fg-1 {
+    width: 110px;
+    height: 110px;
+    top: 4%;
+    right: -50px;
+  }
+
+  .archive-bubble-fg-2 {
+    width: 70px;
+    height: 70px;
+    top: 42%;
+    left: -40px;
+  }
+}
+
+@media (max-width: 520px) {
+  .archive-bubble-fg-1,
+  .archive-bubble-fg-2 {
+    display: none;
+  }
+}
+
+.archive-sparkle {
+  position: fixed;
+  z-index: 1;
+  color: #c877ee;
+  text-shadow: 0 0 8px rgba(200, 119, 238, 0.5);
+  user-select: none;
+  pointer-events: none;
+}
+
+.archive-sparkle-1 {
+  top: 20%;
+  right: 30%;
+  font-size: 1.6rem;
+}
+
+.archive-sparkle-2 {
+  bottom: 22%;
+  left: 10%;
+  font-size: 1.2rem;
+  color: #7c6cf6;
+}
+
+.archive-sparkle-3 {
+  top: 60%;
+  right: 8%;
+  font-size: 1rem;
+  color: #a0d8ff;
+}
+
+/* ---------- Hero ---------- */
+
+.archive-header {
+  position: relative;
+  z-index: 2;
+  padding: 140px 20px 90px;
+  text-align: center;
+}
+
+.archive-kicker {
+  margin: 0 0 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #7c6cf6;
+}
+
+.archive-title {
+  margin: 0;
+  font-family: 'Caveat', cursive;
+  font-size: clamp(4.5rem, 12vw, 8.5rem);
+  font-style: italic;
+  line-height: 1;
+  background: linear-gradient(120deg, #671bda 0%, #a86cf6 45%, #c877ee 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---------- Accordion ---------- */
+
+.archive-accordion {
+  position: relative;
+  z-index: 2;
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 20px 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.archive-month-card {
+  border-radius: 20px;
+  overflow: hidden;
+  background: rgba(31, 31, 31, 0.9);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 32px rgba(52, 25, 110, 0.18);
+}
+
+.archive-month-header {
+  width: 100%;
+  background: transparent;
+  color: #fff;
+  border: none;
+  padding: 22px 28px;
+  font-family: 'Space Grotesk', Arial, sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.archive-chevron {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  color: #c877ee;
+  transform-origin: 50% 50%;
+}
+
+.archive-chevron svg {
+  display: block;
+}
+
+.archive-month-events-wrapper {
+  overflow: hidden;
+}
+
+.archive-month-events {
+  padding: 4px 12px 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+.archive-event-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  color: #fff;
+  text-decoration: none;
+}
+
+.archive-event-row:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.archive-badge {
+  flex-shrink: 0;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(124, 108, 246, 0.25);
+  color: #c9bdff;
+}
+
+.archive-badge-performance {
+  background: rgba(200, 119, 238, 0.22);
+  color: #eab8fb;
+}
+
+.archive-badge-workshop {
+  background: rgba(160, 216, 255, 0.22);
+  color: #a0d8ff;
+}
+
+.archive-badge-competition {
+  background: rgba(255, 214, 122, 0.2);
+  color: #ffd67a;
+}
+
+.archive-event-title {
+  flex: 1;
+  font-size: 0.98rem;
+  font-weight: 500;
+}
+
+.archive-event-artist {
+  color: rgba(255, 255, 255, 0.55);
+  font-weight: 400;
+}
+
+.archive-event-arrow {
+  color: #c877ee;
+  font-size: 1rem;
+}
+
+.archive-empty {
+  margin: 0;
+  padding: 10px 16px 14px;
+  color: rgba(255, 255, 255, 0.55);
+  font-style: italic;
+  font-size: 0.95rem;
+}
