@@ -72,6 +72,14 @@ html {
   -webkit-backdrop-filter: blur(6px);
   border: 1px solid rgba(255, 255, 255, 0.5);
   box-shadow: 0 8px 30px rgba(124, 108, 246, 0.25);
+  transition:
+    top 0.4s ease,
+    right 0.4s ease,
+    bottom 0.4s ease,
+    left 0.4s ease,
+    width 0.4s ease,
+    height 0.4s ease,
+    opacity 0.4s ease;
 }
 
 .archive-bubble-fg-1 {
@@ -109,7 +117,7 @@ html {
 @media (max-width: 520px) {
   .archive-bubble-fg-1,
   .archive-bubble-fg-2 {
-    display: none;
+    opacity: 0;
   }
 }
 
@@ -166,7 +174,7 @@ html {
   font-size: clamp(4.5rem, 12vw, 8.5rem);
   font-style: italic;
   line-height: 1;
-  background: linear-gradient(120deg, #671bda 0%, #a86cf6 45%, #c877ee 100%);
+  background: linear-gradient(60deg, #eaa0ff 40%, #7c6cf6 70%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
