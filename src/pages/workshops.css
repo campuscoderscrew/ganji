@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Akaya+Telivigala&family=Alumni+Sans+Pinstripe:ital@0;1&family=Rock+3D&display=swap');
+
+.workshop-page {
+  background-color:#bdbdf0;
+  min-height: 100vh;
+  margin: 0;
+  font-family: "Akaya Telivigala", Arial, sans-serif;
+}
+
+.header-section {
+    display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+  justify-items: center;
+  padding: 20px;
+  background-color: #bdbdf0;
+}
+
+.ws-description {
+    max-width: 300px;
+    font-size: 1.5em;
+}
+
+.ws-title { 
+    color: #4D11A7;
+    font-size: 3em;
+    font-weight: 100;
+}
+
+.list-title {
+    color: #4D11A7;
+    text-align: center;
+    font-weight: 100;
+    font-size: 2.5em;
+}
+
+.ws{
+    align-content: center;
+}
+
+
+.ws-name {
+    color: #4D11A7;
+    font-size: 1.5em;
+    text-align: center;
+    margin: 20px;
+}
