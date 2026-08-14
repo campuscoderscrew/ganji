@@ -7,11 +7,13 @@ import reportWebVitals from './reportWebVitals';
 import OfficersPage from './pages/Officers.js';
 import ArchivePage from './pages/Archive.js';
 import WorkshopsPage from './pages/Workshops.js';
+import PerformancesPage from './pages/Performances.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const page =  window.location.pathname === '/404' ? <NotFoundPage /> :
   window.location.pathname === '/officers' ? <OfficersPage /> :
   window.location.pathname === '/archive' ? <ArchivePage /> :
+  window.location.pathname === '/performances' ? <PerformancesPage /> :
   window.location.pathname === '/workshops' ? <WorkshopsPage /> :
   <EventsPage />;
 root.render(
