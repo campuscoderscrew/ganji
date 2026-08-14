@@ -8,11 +8,11 @@
 }
 
 .header-section {
-    display: grid;
+  display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 30px;
   justify-items: center;
-  padding: 20px;
+  padding: 56px 20px 20px;
   background-color: #bdbdf0;
 }
 
@@ -44,4 +44,16 @@
     font-size: 1.5em;
     text-align: center;
     margin: 20px;
+}
+
+@media (max-width: 800px) {
+  .header-section {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .header-section {
+    padding-top: 42px;
+  }
 }

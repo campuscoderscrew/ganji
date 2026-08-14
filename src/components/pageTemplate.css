@@ -1,0 +1,4 @@
+.page-template-outlet {
+  position: relative;
+  z-index: 2;
+}

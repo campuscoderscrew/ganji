@@ -4,9 +4,6 @@
   position: relative;
   min-height: 100vh;
   width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background: radial-gradient(circle at 20% 0%, #e4ddff 0%, #ededff 45%, #e6e6fb 100%);
   overflow: hidden;
   padding: 40px 20px;
@@ -150,6 +147,13 @@
 
 /* ---------- Content ---------- */
 
+.notfound-shell {
+  min-height: calc(100vh - 140px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .notfound-content {
   position: relative;
   z-index: 2;
@@ -206,4 +210,10 @@
 
 .notfound-home-button:active {
   box-shadow: 0 4px 12px rgba(124, 108, 246, 0.4);
+}
+
+@media (max-width: 640px) {
+  .notfound-shell {
+    min-height: calc(100vh - 180px);
+  }
 }

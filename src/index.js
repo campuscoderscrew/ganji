@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './pages/events.css';
 import EventsPage from './App.js';
@@ -9,20 +9,40 @@ import ArchivePage from './pages/Archive.js';
 import WorkshopsPage from './pages/Workshops.js';
 import PerformancesPage from './pages/Performances.js';
 
+function Router() {
+  const [pathname, setPathname] = useState(window.location.pathname);
+
+  useEffect(() => {
+    const handleLocationChange = () => {
+      setPathname(window.location.pathname);
+    };
+
+    window.addEventListener('popstate', handleLocationChange);
+    window.addEventListener('codex:navigate', handleLocationChange);
+
+    return () => {
+      window.removeEventListener('popstate', handleLocationChange);
+      window.removeEventListener('codex:navigate', handleLocationChange);
+    };
+  }, []);
+
+  const page =
+    pathname === '/404' ? <NotFoundPage /> :
+    pathname === '/officers' ? <OfficersPage /> :
+    pathname === '/archive' ? <ArchivePage /> :
+    pathname === '/performances' ? <PerformancesPage /> :
+    pathname === '/workshops' ? <WorkshopsPage /> :
+    <EventsPage />;
+
+  return page;
+}
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const page =  window.location.pathname === '/404' ? <NotFoundPage /> :
-  window.location.pathname === '/officers' ? <OfficersPage /> :
-  window.location.pathname === '/archive' ? <ArchivePage /> :
-  window.location.pathname === '/performances' ? <PerformancesPage /> :
-  window.location.pathname === '/workshops' ? <WorkshopsPage /> :
-  <EventsPage />;
+
 root.render(
   <React.StrictMode>
-    {page}
+    <Router />
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

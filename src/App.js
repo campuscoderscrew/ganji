@@ -1,129 +1,158 @@
-import React, { useState } from 'react'; 
-import './pages/events.css'; 
-import practiceImage from './Chungha.png'; 
-import holdImage from './ComingSoon.png'; 
+import React, { useState } from 'react';
+import './pages/events.css';
+import practiceImage from './Chungha.png';
+import holdImage from './ComingSoon.png';
+import PageTemplate from './components/PageTemplate';
 
-function EventsPage() { 
-    const months = [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ]; 
-    const [currentDate, setCurrentDate] = useState(new Date()); const [modalData, setModalData] = useState({ title: '', description: '', image: '' }); 
-    const [isModalOpen, setIsModalOpen] = useState(false); 
+function EventsPage() {
+  const months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [modalData, setModalData] = useState({ title: '', description: '', image: '' });
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const handlePrev = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1));
-    const handleNext = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1));
- 
-    const getDaysInMonth = (year, month) => new Date(year, month + 1, 0).getDate(); 
-    const getStartDayOfWeek = (year, month) => new Date(year, month, 1).getDay(); 
+  const handlePrev = () =>
+    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1));
+  const handleNext = () =>
+    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1));
 
-    const daysInMonth = getDaysInMonth(currentDate.getFullYear(), currentDate.getMonth()); 
-    const startDay = getStartDayOfWeek(currentDate.getFullYear(), currentDate.getMonth()); 
+  const getDaysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
+  const getStartDayOfWeek = (year, month) => new Date(year, month, 1).getDay();
 
-    const calendarDays = [...Array(startDay).fill(null), ...Array.from({length: daysInMonth}, (_,i)=>i+1)];
- 
-    const eventMap = { 
-        '2025-09-10': { 
-            label: 'Eenie Meenie', 
-            description: 'Like eenie ☝️meenie☝️minie ☝️moe☝️\n\nCome learn ⭐️❤️EENIE MEENIE by CHUNG HA❤️⭐️ taught by ✨@ije.526✨ THIS THURSDAY ‼️\n\nWORKSHOP DETAILS ‼️\n🗓️: Tuesday, July 1st\n⏰: 7-8PM\n📍: Activities Room near Terpzone (STAMP)', 
-            color: 'purple', 
-            image: practiceImage 
-        }, 
-        '2025-09-16': { 
-            label: 'Practice ?', 
-            description: 'Description text here', 
-            color: 'purple', 
-            image: holdImage 
-        }, 
-        '2025-09-30': {
-            label: 'Practice ?', 
-            description: 'Description text here', 
-            color: 'purple', 
-            image: holdImage 
-        }, 
-        '2025-10-01': {
-            label: 'Practice ?', 
-            description: 'Description text here', 
-            color: 'purple', 
-            image: holdImage 
-        }, 
-    }; 
+  const daysInMonth = getDaysInMonth(currentDate.getFullYear(), currentDate.getMonth());
+  const startDay = getStartDayOfWeek(currentDate.getFullYear(), currentDate.getMonth());
+  const calendarDays = [
+    ...Array(startDay).fill(null),
+    ...Array.from({ length: daysInMonth }, (_, i) => i + 1),
+  ];
 
-    
-    const openModal = (title, description, image) => setModalData({title, description, image}) || setIsModalOpen(true);
+  const eventMap = {
+    '2025-09-10': {
+      label: 'Eenie Meenie',
+      description:
+        'Like eenie â˜ï¸meenieâ˜ï¸minie â˜ï¸moeâ˜ï¸\n\nCome learn â­ï¸â¤ï¸EENIE MEENIE by CHUNG HAâ¤ï¸â­ï¸ taught by âœ¨@ije.526âœ¨ THIS THURSDAY â€¼ï¸\n\nWORKSHOP DETAILS â€¼ï¸\nðŸ—“ï¸: Tuesday, July 1st\nâ°: 7-8PM\nðŸ“: Activities Room near Terpzone (STAMP)',
+      color: 'purple',
+      image: practiceImage,
+    },
+    '2025-09-16': {
+      label: 'Practice ?',
+      description: 'Description text here',
+      color: 'purple',
+      image: holdImage,
+    },
+    '2025-09-30': {
+      label: 'Practice ?',
+      description: 'Description text here',
+      color: 'purple',
+      image: holdImage,
+    },
+    '2025-10-01': {
+      label: 'Practice ?',
+      description: 'Description text here',
+      color: 'purple',
+      image: holdImage,
+    },
+  };
 
-    const closeModal = () => setIsModalOpen(false);
+  const openModal = (title, description, image) =>
+    setModalData({ title, description, image }) || setIsModalOpen(true);
 
-    return ( 
-    <div className="heading-container">
-      <main>
-        <h1>Events</h1>
-        <h2>
-          Check out all of our events! <br />
-          Click through the months to look at our present and past events. <br />
-          Tap into the event’s banner for more details.
-        </h2>
-      </main>
+  const closeModal = () => setIsModalOpen(false);
 
-      <section className="calendar">
-        <div className="wrapper">
-          <header>
-            <p className="current-date">
-              {months[currentDate.getMonth()]} {currentDate.getFullYear()}
-            </p>
-            <div className="icons">
-              <span onClick={handlePrev}> &lt; </span>
-              <span onClick={handleNext}> &gt; </span>
-            </div>
-          </header>
+  return (
+    <div className="events-page">
+      <PageTemplate activePath="/" contentClassName="heading-container">
+        <main>
+          <h1>Events</h1>
+          <h2>
+            Check out all of our events! <br />
+            Click through the months to look at our present and past events. <br />
+            Tap into the eventâ€™s banner for more details.
+          </h2>
+        </main>
 
-          <ul className="daysOfWeek">
-            {['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(d => <li key={d}>{d}</li>)}
-          </ul>
+        <section className="calendar">
+          <div className="wrapper">
+            <header>
+              <p className="current-date">
+                {months[currentDate.getMonth()]} {currentDate.getFullYear()}
+              </p>
+              <div className="icons">
+                <span onClick={handlePrev}> &lt; </span>
+                <span onClick={handleNext}> &gt; </span>
+              </div>
+            </header>
 
-          <ul className="days">
-            {calendarDays.map((day, index) => {
-              const dayNumber = day || '';
-              const isToday =
-                dayNumber === new Date().getDate() &&
-                currentDate.getMonth() === new Date().getMonth() &&
-                currentDate.getFullYear() === new Date().getFullYear();
+            <ul className="daysOfWeek">
+              {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => (
+                <li key={d}>{d}</li>
+              ))}
+            </ul>
 
-              const formattedDate = day
-                ? `${currentDate.getFullYear()}-${String(currentDate.getMonth()+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`
-                : null;
+            <ul className="days">
+              {calendarDays.map((day, index) => {
+                const dayNumber = day || '';
+                const isToday =
+                  dayNumber === new Date().getDate() &&
+                  currentDate.getMonth() === new Date().getMonth() &&
+                  currentDate.getFullYear() === new Date().getFullYear();
 
-              const event = formattedDate ? eventMap[formattedDate] : null;
+                const formattedDate = day
+                  ? `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+                  : null;
 
-              return (
-                <li key={index} className={isToday ? 'today' : ''}>
-                  {dayNumber}
-                  {event && <span className="dot-highlight"></span>}
-                  {event && (
-                    <div className="event">
-                      <span className="event-link" onClick={() => openModal(event.label, event.description, event.image)}>
-                        {event.label}
-                      </span>
-                    </div>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      </section>
+                const event = formattedDate ? eventMap[formattedDate] : null;
 
-      {isModalOpen && (
-        <div className="modal" onClick={e => e.target.className === 'modal' && closeModal()}>
-          <div className="modal-content">
-            <div className="modal-left">
-              <img src={modalData.image} alt={modalData.title} />
-            </div>
-            <div className="modal-right">
-              <span className="close-button" onClick={closeModal}>&times;</span>
-              <h2>{modalData.title}</h2>
-              <p>{modalData.description}</p>
+                return (
+                  <li key={index} className={isToday ? 'today' : ''}>
+                    {dayNumber}
+                    {event && <span className="dot-highlight"></span>}
+                    {event && (
+                      <div className="event">
+                        <span
+                          className="event-link"
+                          onClick={() => openModal(event.label, event.description, event.image)}
+                        >
+                          {event.label}
+                        </span>
+                      </div>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </section>
+
+        {isModalOpen && (
+          <div className="modal" onClick={(e) => e.target.className === 'modal' && closeModal()}>
+            <div className="modal-content">
+              <div className="modal-left">
+                <img src={modalData.image} alt={modalData.title} />
+              </div>
+              <div className="modal-right">
+                <span className="close-button" onClick={closeModal}>
+                  &times;
+                </span>
+                <h2>{modalData.title}</h2>
+                <p>{modalData.description}</p>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </PageTemplate>
     </div>
   );
 }

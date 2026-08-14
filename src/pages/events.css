@@ -6,53 +6,9 @@ body {
   font-family: Arial, sans-serif;
 }
 
-/* Navbar container */
-nav {
-  background-color: #1f1f1f;
-  padding: 10px 20px;
-  display: flex;
-  justify-content: center; /* Horizontal center */
-  align-items: center;      /* Vertical center */
+.events-page {
+  min-height: 100vh;
 }
-
-/* Navbar list */
-nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  align-items: center; /* Vertically center list items */
-  gap: 20px;
-}
-
-/* Navbar list items */
-nav li {
-  display: flex;
-  align-items: center;
-}
-
-/* Navbar links */
-nav a {
-  display: flex;
-  align-items: center;
-  color: #bdbdf0;
-  text-decoration: none;
-  padding: 10px 12px;
-  font-size: 16px;
-}
-
-/* Hover effect */
-nav a:hover {
-  color: #671bda;
-}
-
-/* Logo image */
-nav img {
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
-}
-
 
 /* Headings */
 h1 {
@@ -66,6 +22,7 @@ h2 {
 .heading-container {
   max-width: 800px;   /* same as .calendar or .wrapper */
   margin: 0 auto;     /* centers it horizontally */
+  padding: 56px 0 32px;
   padding-left: 0;    /* no extra padding */
 }
 
@@ -278,4 +235,10 @@ header .icons span:last-child {
 
 .close-button:hover {
   color: #ffcccc;
+}
+
+@media (max-width: 640px) {
+  .heading-container {
+    padding-top: 42px;
+  }
 }
