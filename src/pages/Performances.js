@@ -138,9 +138,9 @@ function PerformancesPage() {
         style={{ x: parallaxXSlow, y: parallaxYSlow }}
       />
 
-      <span className="performances-sparkle performances-sparkle-1">âœ¦</span>
-      <span className="performances-sparkle performances-sparkle-2">âœ§</span>
-      <span className="performances-sparkle performances-sparkle-3">âœ¦</span>
+      <span className="performances-sparkle performances-sparkle-1">✦</span>
+      <span className="performances-sparkle performances-sparkle-2">✧</span>
+      <span className="performances-sparkle performances-sparkle-3">✦</span>
 
       <PageTemplate activePath="/performances">
         <header className="performances-header">
@@ -224,11 +224,11 @@ function PerformancesPage() {
             transition={{ duration: 0.5 }}
           >
             <button type="button" onClick={goToPreviousMonth} aria-label="Previous month">
-              â†
+              ←
             </button>
             <h2>{currentMonth.month}</h2>
             <button type="button" onClick={goToNextMonth} aria-label="Next month">
-              â†’
+              →
             </button>
           </motion.div>
 

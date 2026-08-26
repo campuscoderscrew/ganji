@@ -46,9 +46,9 @@ function NotFoundPage() {
         style={{ x: parallaxXSlow, y: parallaxYSlow }}
       />
 
-      <span className="notfound-sparkle notfound-sparkle-1">âœ¦</span>
-      <span className="notfound-sparkle notfound-sparkle-2">âœ§</span>
-      <span className="notfound-sparkle notfound-sparkle-3">âœ¦</span>
+      <span className="notfound-sparkle notfound-sparkle-1">✦</span>
+      <span className="notfound-sparkle notfound-sparkle-2">✧</span>
+      <span className="notfound-sparkle notfound-sparkle-3">✦</span>
 
       <PageTemplate>
         <div className="notfound-shell">
