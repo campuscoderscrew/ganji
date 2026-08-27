@@ -4,7 +4,7 @@ import './siteNavbar.css';
 import logo from '../icon.jpg';
 
 const navItems = [
-  { href: '/#about', label: 'About', match: null },
+  { href: '/about', label: 'About', match: '/about' },
   { href: '/officers', label: 'Officers', match: '/officers' },
   { href: '/', label: 'Events', match: '/' },
   { href: '/workshops', label: 'Workshops', match: '/workshops' },

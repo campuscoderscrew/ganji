@@ -8,6 +8,7 @@ import OfficersPage from './pages/Officers.js';
 import ArchivePage from './pages/Archive.js';
 import WorkshopsPage from './pages/Workshops.js';
 import PerformancesPage from './pages/Performances.js';
+import AboutPage from './pages/About.js';
 
 function Router() {
   const [pathname, setPathname] = useState(window.location.pathname);
@@ -28,6 +29,7 @@ function Router() {
 
   const page =
     pathname === '/404' ? <NotFoundPage /> :
+    pathname === '/about' ? <AboutPage /> :
     pathname === '/officers' ? <OfficersPage /> :
     pathname === '/archive' ? <ArchivePage /> :
     pathname === '/performances' ? <PerformancesPage /> :
