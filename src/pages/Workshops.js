@@ -12,7 +12,7 @@ function WorkshopsPage() {
 
   return (
     <div className="workshop-page">
-      <PageTemplate activePath="/workshops">
+      <PageTemplate>
         <div className="header-section">
           <div>
             <h1 className="ws-title">WORKSHOPS</h1>

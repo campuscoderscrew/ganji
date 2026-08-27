@@ -73,7 +73,7 @@ function EventsPage() {
 
   return (
     <div className="events-page">
-      <PageTemplate activePath="/" contentClassName="heading-container">
+      <PageTemplate contentClassName="heading-container">
         <main>
           <h1>Events</h1>
           <h2>

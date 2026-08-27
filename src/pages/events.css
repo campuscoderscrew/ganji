@@ -8,6 +8,8 @@ body {
 
 .events-page {
   min-height: 100vh;
+  padding-top: var(--gnav-height, 90px);
+  box-sizing: border-box;
 }
 
 /* Headings */

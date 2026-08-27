@@ -10,20 +10,12 @@ html {
 .archive-page {
   position: relative;
   min-height: 100vh;
+  padding-top: var(--gnav-height, 90px);
+  box-sizing: border-box;
   width: 100%;
   background: radial-gradient(circle at 20% 0%, #e4ddff 0%, #ededff 45%, #e6e6fb 100%);
   overflow-x: hidden;
   font-family: 'Space Grotesk', Arial, sans-serif;
-}
-
-.archive-dots {
-  position: fixed;
-  inset: 0;
-  background-image: radial-gradient(#c3b8f7 2.5px, transparent 2.5px);
-  background-size: 28px 28px;
-  opacity: 0.5;
-  pointer-events: none;
-  z-index: 0;
 }
 
 /* ---------- Bubbles ---------- */

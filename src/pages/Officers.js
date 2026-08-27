@@ -17,7 +17,7 @@ function OfficersPage() {
 
   return (
     <div className="officers-page">
-      <PageTemplate activePath="/officers">
+      <PageTemplate>
         <main className="heading-officers">
           <h1 className="h1-officers">Meet the Ganji E-Board</h1>
           <h2 className="h2-officers">2025-2026</h2>

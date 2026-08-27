@@ -11,16 +11,6 @@
   font-family: 'Space Grotesk', Arial, sans-serif;
 }
 
-.notfound-dots {
-  position: fixed;
-  inset: 0;
-  background-image: radial-gradient(#c3b8f7 2.5px, transparent 2.5px);
-  background-size: 28px 28px;
-  opacity: 0.5;
-  pointer-events: none;
-  z-index: 0;
-}
-
 /* ---------- Bubbles ---------- */
 
 .notfound-bubble {
@@ -147,8 +137,10 @@
 
 /* ---------- Content ---------- */
 
+/* No navbar on this page, so the shell fills the full viewport minus the
+   page's own 40px vertical padding and centers the content in it. */
 .notfound-shell {
-  min-height: calc(100vh - 140px);
+  min-height: calc(100vh - 80px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -212,8 +204,3 @@
   box-shadow: 0 4px 12px rgba(124, 108, 246, 0.4);
 }
 
-@media (max-width: 640px) {
-  .notfound-shell {
-    min-height: calc(100vh - 180px);
-  }
-}

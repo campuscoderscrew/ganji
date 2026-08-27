@@ -46,8 +46,6 @@ function ArchivePage() {
 
   return (
     <div className="archive-page" onMouseMove={handleMouseMove}>
-      <div className="archive-dots" />
-
       <motion.div
         className="archive-bubble archive-bubble-1"
         animate={{ y: [0, -22, 0], x: [0, 12, 0] }}
@@ -72,7 +70,7 @@ function ArchivePage() {
       <span className="archive-sparkle archive-sparkle-2">✧</span>
       <span className="archive-sparkle archive-sparkle-3">✦</span>
 
-      <PageTemplate activePath="/archive">
+      <PageTemplate>
         <header className="archive-header">
           <motion.p
             className="archive-kicker"
