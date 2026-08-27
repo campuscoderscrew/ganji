@@ -1,170 +1,348 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
-.site-nav {
-  position: sticky;
-  top: 18px;
-  z-index: 8;
-  width: min(1080px, calc(100% - 28px));
-  margin: 22px auto 0;
-  padding: 12px 14px 12px 18px;
+:root {
+  /* Height the navbar overlay reserves at the top of each page. Page
+     containers use it as top padding, so their background still paints
+     underneath the navbar instead of leaving a bare strip above them. */
+  --gnav-height: 90px;
+}
+
+/* ============ Shell ============ */
+
+/* Fixed rather than sticky so it takes no space in flow: pages start at the
+   very top and their background/decoration runs behind the glass. */
+.gnav-wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 60;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  border-radius: 28px;
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.18)),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.08));
-  backdrop-filter: blur(22px) saturate(1.2);
-  -webkit-backdrop-filter: blur(22px) saturate(1.2);
-  border: 1px solid rgba(255, 255, 255, 0.48);
-  box-shadow:
-    0 18px 50px rgba(73, 41, 138, 0.14),
-    inset 0 1px 0 rgba(255, 255, 255, 0.36);
+  justify-content: center;
+  padding: 22px 20px 10px;
+  pointer-events: none;
   font-family: 'Space Grotesk', Arial, sans-serif;
 }
 
-.site-nav::before {
-  content: '';
-  position: absolute;
-  inset: 1px;
-  border-radius: 27px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.04));
-  pointer-events: none;
+.gnav-wrap > * {
+  pointer-events: auto;
 }
 
-.site-nav-brand,
-.site-nav-links a {
+/* ============ Capsule ============ */
+
+.gnav {
   position: relative;
   z-index: 1;
+  width: min(1080px, 100%);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  /* Symmetric so both rounded ends get an identical inset. Paired with 40px
+     end elements inside a 58px bar, the gap stays even around each curve. */
+  padding: 9px;
+  border-radius: 999px;
+  background: rgba(29, 25, 43, 0.86);
+  backdrop-filter: blur(20px) saturate(1.35);
+  -webkit-backdrop-filter: blur(20px) saturate(1.35);
+  box-shadow: 0 6px 20px rgba(20, 12, 40, 0.14);
 }
 
-.site-nav-brand {
+/* ============ Brand ============ */
+
+.gnav-brand {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  text-decoration: none;
+  gap: 11px;
   flex-shrink: 0;
+  text-decoration: none;
+  padding-right: 6px;
 }
 
-.site-nav-brand-mark {
-  width: 44px;
-  height: 44px;
-  border-radius: 16px;
+/* Circular so it sits concentric inside the capsule's rounded left end. */
+.gnav-brand-mark {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  border-radius: 50%;
   overflow: hidden;
-  box-shadow:
-    0 10px 24px rgba(73, 41, 138, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
-.site-nav-brand-mark img {
+.gnav-brand-mark img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
   display: block;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
-.site-nav-brand-copy {
+.gnav-brand-copy {
   display: flex;
   flex-direction: column;
   line-height: 1;
 }
 
-.site-nav-brand-copy span {
-  color: #1f1f1f;
-  font-size: 1rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+.gnav-brand-name {
+  font-family: 'Caveat', cursive;
+  font-size: 1.65rem;
+  line-height: 0.95;
+  background: linear-gradient(60deg, #eaa0ff 30%, #b9a3ff 70%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
-.site-nav-brand-copy small {
-  margin-top: 5px;
-  color: rgba(31, 31, 31, 0.6);
-  font-size: 0.68rem;
+.gnav-brand-sub {
+  margin-top: 3px;
+  color: rgba(226, 219, 255, 0.5);
+  font-size: 0.56rem;
   font-weight: 600;
   letter-spacing: 0.22em;
   text-transform: uppercase;
 }
 
-.site-nav-links {
+.gnav-brand-sparkle {
+  position: absolute;
+  top: -2px;
+  left: 26px;
+  font-size: 0.72rem;
+  color: #eaa0ff;
+  pointer-events: none;
+}
+
+/* ============ Desktop links ============ */
+
+.gnav-links {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  flex-wrap: wrap;
-  gap: 10px;
+  gap: 2px;
 }
 
-.site-nav-links a {
+/* Explicit height (rather than vertical padding) so the active pill is exactly
+   as tall as the brand mark, keeping both ends of the bar symmetric. */
+.gnav-link {
   position: relative;
-  overflow: hidden;
-  padding: 11px 16px;
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 16px;
   border-radius: 999px;
-  color: rgba(31, 31, 31, 0.78);
+  color: rgba(226, 219, 255, 0.62);
   text-decoration: none;
-  font-size: 0.84rem;
-  font-weight: 700;
+  font-size: 0.7rem;
+  font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  transition:
-    color 0.22s ease,
-    background-color 0.22s ease,
-    box-shadow 0.22s ease,
-    transform 0.22s ease;
+  white-space: nowrap;
+  transition: color 0.25s ease;
 }
 
-.site-nav-links a:hover {
-  color: #1f1f1f;
-  background: rgba(255, 255, 255, 0.4);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28);
-  transform: translateY(-1px);
-}
-
-.site-nav-links a.is-active {
+.gnav-link:hover,
+.gnav-link:focus-visible {
   color: #fff;
-  box-shadow: 0 10px 24px rgba(111, 77, 255, 0.16);
 }
 
-.site-nav-link-label {
+.gnav-link.is-active {
+  color: #fff;
+}
+
+.gnav-label {
   position: relative;
-  z-index: 1;
+  z-index: 2;
 }
 
-.site-nav-active-pill {
+/* Soft highlight that glides between links under the cursor. */
+.gnav-hover-pill {
   position: absolute;
   inset: 0;
+  z-index: 1;
   border-radius: 999px;
-  background: linear-gradient(135deg, rgba(111, 77, 255, 0.96), rgba(200, 119, 238, 0.92));
-  box-shadow:
-    0 10px 24px rgba(111, 77, 255, 0.24),
-    inset 0 1px 0 rgba(255, 255, 255, 0.26);
+  background: rgba(255, 255, 255, 0.09);
 }
 
-@media (max-width: 760px) {
-  .site-nav {
-    width: min(100%, calc(100% - 20px));
-    margin-top: 14px;
-    padding: 14px;
-    border-radius: 24px;
+/* Gradient pill that springs to whichever route is active. */
+.gnav-active-pill {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #7c6cf6 0%, #c877ee 100%);
+}
+
+/* ============ Menu button ============ */
+
+.gnav-menu-btn {
+  display: none;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 16px 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(226, 219, 255, 0.85);
+  font-family: 'Space Grotesk', Arial, sans-serif;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    background 0.28s ease,
+    color 0.28s ease,
+    border-color 0.28s ease,
+    box-shadow 0.28s ease;
+}
+
+.gnav-menu-btn:hover {
+  background: rgba(255, 255, 255, 0.13);
+  color: #fff;
+}
+
+.gnav-menu-btn.is-open {
+  color: #fff;
+  border-color: transparent;
+  background: linear-gradient(135deg, #7c6cf6 0%, #c877ee 100%);
+}
+
+.gnav-menu-glyph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+}
+
+.gnav-menu-glyph svg {
+  display: block;
+}
+
+/* Fixed width so swapping Menu/Close doesn't resize the button. */
+.gnav-menu-label {
+  min-width: 42px;
+  text-align: left;
+}
+
+/* ============ Mobile panel ============ */
+
+.gnav-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: rgba(14, 9, 28, 0.5);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+.gnav-panel {
+  position: absolute;
+  z-index: 2;
+  top: calc(100% - 2px);
+  left: 20px;
+  right: 20px;
+  transform-origin: top center;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px;
+  border-radius: 26px;
+  background: rgba(26, 22, 40, 0.94);
+  backdrop-filter: blur(22px) saturate(1.3);
+  -webkit-backdrop-filter: blur(22px) saturate(1.3);
+  box-shadow: 0 16px 36px rgba(20, 12, 40, 0.22);
+}
+
+.gnav-panel-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 18px;
+  border-radius: 18px;
+  color: rgba(226, 219, 255, 0.78);
+  text-decoration: none;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.gnav-panel-link:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: #fff;
+}
+
+.gnav-panel-link.is-active {
+  color: #fff;
+  background: linear-gradient(135deg, #7c6cf6 0%, #c877ee 100%);
+}
+
+.gnav-panel-arrow {
+  opacity: 0.55;
+  font-size: 0.9rem;
+}
+
+/* ============ Responsive ============ */
+
+@media (max-width: 1000px) {
+  .gnav-links {
+    display: none;
   }
 
-  .site-nav-brand {
-    width: 100%;
-    justify-content: center;
+  .gnav-menu-btn {
+    display: inline-flex;
+  }
+}
+
+@media (max-width: 520px) {
+  /* The bar is shorter here, so pages need correspondingly less top padding. */
+  :root {
+    --gnav-height: 74px;
   }
 
-  .site-nav-brand-copy small {
-    letter-spacing: 0.16em;
+  .gnav-wrap {
+    padding: 14px 14px 8px;
   }
 
-  .site-nav-links {
-    width: 100%;
-    justify-content: center;
+  .gnav {
+    padding: 8px;
   }
 
-  .site-nav-links a {
-    padding: 10px 13px;
-    font-size: 0.74rem;
-    letter-spacing: 0.1em;
+  /* Keep the two end elements the same height here as well. */
+  .gnav-menu-btn {
+    height: 36px;
+  }
+
+  .gnav-panel {
+    left: 14px;
+    right: 14px;
+  }
+
+  .gnav-brand-mark {
+    width: 36px;
+    height: 36px;
+  }
+
+  .gnav-brand-name {
+    font-size: 1.4rem;
+  }
+
+  .gnav-brand-sub {
+    font-size: 0.5rem;
+    letter-spacing: 0.18em;
+  }
+
+  .gnav-brand-sparkle {
+    left: 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gnav-link,
+  .gnav-menu-btn {
+    transition: none;
   }
 }

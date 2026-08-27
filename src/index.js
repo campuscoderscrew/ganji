@@ -9,6 +9,7 @@ import ArchivePage from './pages/Archive.js';
 import WorkshopsPage from './pages/Workshops.js';
 import PerformancesPage from './pages/Performances.js';
 import AboutPage from './pages/About.js';
+import SiteNavbar from './components/SiteNavbar.js';
 
 function Router() {
   const [pathname, setPathname] = useState(window.location.pathname);
@@ -27,8 +28,10 @@ function Router() {
     };
   }, []);
 
+  const isNotFound = pathname === '/404';
+
   const page =
-    pathname === '/404' ? <NotFoundPage /> :
+    isNotFound ? <NotFoundPage /> :
     pathname === '/about' ? <AboutPage /> :
     pathname === '/officers' ? <OfficersPage /> :
     pathname === '/archive' ? <ArchivePage /> :
@@ -36,7 +39,15 @@ function Router() {
     pathname === '/workshops' ? <WorkshopsPage /> :
     <EventsPage />;
 
-  return page;
+  // The navbar is rendered here, outside the swapped page, so one instance
+  // survives every navigation instead of remounting (and re-animating) with
+  // each page. The 404 page intentionally has no navbar.
+  return (
+    <>
+      {!isNotFound && <SiteNavbar activePath={pathname} />}
+      {page}
+    </>
+  );
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

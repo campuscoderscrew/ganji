@@ -42,7 +42,7 @@ function EventsPage() {
     '2025-09-10': {
       label: 'Eenie Meenie',
       description:
-        'Like eenie â˜ï¸meenieâ˜ï¸minie â˜ï¸moeâ˜ï¸\n\nCome learn â­ï¸â¤ï¸EENIE MEENIE by CHUNG HAâ¤ï¸â­ï¸ taught by âœ¨@ije.526âœ¨ THIS THURSDAY â€¼ï¸\n\nWORKSHOP DETAILS â€¼ï¸\nðŸ—“ï¸: Tuesday, July 1st\nâ°: 7-8PM\nðŸ“: Activities Room near Terpzone (STAMP)',
+        'Like eenie ☝️meenie☝️minie ☝️moe☝️\n\nCome learn ⭐️❤️EENIE MEENIE by CHUNG HA❤️⭐️ taught by ✨@ije.526✨ THIS THURSDAY ‼️\n\nWORKSHOP DETAILS ‼️\n🗓️: Tuesday, July 1st\n⏰: 7-8PM\n📍: Activities Room near Terpzone (STAMP)',
       color: 'purple',
       image: practiceImage,
     },
@@ -73,13 +73,13 @@ function EventsPage() {
 
   return (
     <div className="events-page">
-      <PageTemplate activePath="/" contentClassName="heading-container">
+      <PageTemplate contentClassName="heading-container">
         <main>
           <h1>Events</h1>
           <h2>
             Check out all of our events! <br />
             Click through the months to look at our present and past events. <br />
-            Tap into the eventâ€™s banner for more details.
+            Tap into the event’s banner for more details.
           </h2>
         </main>
 

@@ -46,8 +46,6 @@ function ArchivePage() {
 
   return (
     <div className="archive-page" onMouseMove={handleMouseMove}>
-      <div className="archive-dots" />
-
       <motion.div
         className="archive-bubble archive-bubble-1"
         animate={{ y: [0, -22, 0], x: [0, 12, 0] }}
@@ -68,11 +66,11 @@ function ArchivePage() {
         style={{ x: parallaxXSlow, y: parallaxYSlow }}
       />
 
-      <span className="archive-sparkle archive-sparkle-1">âœ¦</span>
-      <span className="archive-sparkle archive-sparkle-2">âœ§</span>
-      <span className="archive-sparkle archive-sparkle-3">âœ¦</span>
+      <span className="archive-sparkle archive-sparkle-1">✦</span>
+      <span className="archive-sparkle archive-sparkle-2">✧</span>
+      <span className="archive-sparkle archive-sparkle-3">✦</span>
 
-      <PageTemplate activePath="/archive">
+      <PageTemplate>
         <header className="archive-header">
           <motion.p
             className="archive-kicker"
@@ -162,10 +160,10 @@ function ArchivePage() {
                               <span className="archive-event-title">
                                 {event.title}
                                 {event.artist && (
-                                  <span className="archive-event-artist"> â€” {event.artist}</span>
+                                  <span className="archive-event-artist"> — {event.artist}</span>
                                 )}
                               </span>
-                              <span className="archive-event-arrow">â†’</span>
+                              <span className="archive-event-arrow">→</span>
                             </motion.a>
                           ))
                         )}

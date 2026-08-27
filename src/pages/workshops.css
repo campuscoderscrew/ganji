@@ -3,6 +3,8 @@
 .workshop-page {
   background-color:#bdbdf0;
   min-height: 100vh;
+  padding-top: var(--gnav-height, 90px);
+  box-sizing: border-box;
   margin: 0;
   font-family: "Akaya Telivigala", Arial, sans-serif;
 }

@@ -116,8 +116,6 @@ function PerformancesPage() {
 
   return (
     <div className="performances-page" onMouseMove={handleMouseMove}>
-      <div className="performances-dots" />
-
       <motion.div
         className="performances-bubble performances-bubble-1"
         animate={{ y: [0, -22, 0], x: [0, 12, 0] }}
@@ -138,11 +136,11 @@ function PerformancesPage() {
         style={{ x: parallaxXSlow, y: parallaxYSlow }}
       />
 
-      <span className="performances-sparkle performances-sparkle-1">âœ¦</span>
-      <span className="performances-sparkle performances-sparkle-2">âœ§</span>
-      <span className="performances-sparkle performances-sparkle-3">âœ¦</span>
+      <span className="performances-sparkle performances-sparkle-1">✦</span>
+      <span className="performances-sparkle performances-sparkle-2">✧</span>
+      <span className="performances-sparkle performances-sparkle-3">✦</span>
 
-      <PageTemplate activePath="/performances">
+      <PageTemplate>
         <header className="performances-header">
           <motion.p
             className="performances-kicker"
@@ -174,32 +172,34 @@ function PerformancesPage() {
           </motion.p>
         </header>
 
-        <motion.section
-          className="performances-spotlight"
-          initial={{ opacity: 0, y: 36 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1], delay: 0.18 }}
-        >
-          <div className="performances-spotlight-copy">
-            <p className="performances-spotlight-label">Most Recent Performance</p>
-            <h2>
-              {currentMonth.spotlight.title}
-              <span>{currentMonth.spotlight.artist}</span>
-            </h2>
-            <p>{currentMonth.spotlight.description}</p>
-          </div>
-
-          <a
-            className="performances-spotlight-media"
-            href={currentMonth.spotlight.link}
-            target="_blank"
-            rel="noreferrer"
-            aria-label={`Watch ${currentMonth.spotlight.title} on YouTube`}
+        <div className="performances-spotlight-wrap">
+          <motion.section
+            className="performances-spotlight"
+            initial={{ opacity: 0, y: 36 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1], delay: 0.18 }}
           >
-            <img src={currentMonth.spotlight.image} alt={currentMonth.spotlight.title} />
-            <span className="performances-play-badge">Watch</span>
-          </a>
-        </motion.section>
+            <div className="performances-spotlight-copy">
+              <p className="performances-spotlight-label">Most Recent Performance</p>
+              <h2>
+                {currentMonth.spotlight.title}
+                <span>{currentMonth.spotlight.artist}</span>
+              </h2>
+              <p>{currentMonth.spotlight.description}</p>
+            </div>
+
+            <a
+              className="performances-spotlight-media"
+              href={currentMonth.spotlight.link}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`Watch ${currentMonth.spotlight.title} on YouTube`}
+            >
+              <img src={currentMonth.spotlight.image} alt={currentMonth.spotlight.title} />
+              <span className="performances-play-badge">Watch</span>
+            </a>
+          </motion.section>
+        </div>
 
         <div className="performances-list-cta-wrap">
           <motion.button
@@ -224,11 +224,29 @@ function PerformancesPage() {
             transition={{ duration: 0.5 }}
           >
             <button type="button" onClick={goToPreviousMonth} aria-label="Previous month">
-              â†
+              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                <polyline
+                  points="15 5 8 12 15 19"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </button>
             <h2>{currentMonth.month}</h2>
             <button type="button" onClick={goToNextMonth} aria-label="Next month">
-              â†’
+              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                <polyline
+                  points="9 5 16 12 9 19"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
             </button>
           </motion.div>
 
