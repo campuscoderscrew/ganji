@@ -24,25 +24,6 @@ html {
   font-family: 'Space Grotesk', Arial, sans-serif;
 }
 
-/* Dots*/
-
-.about-dots {
-  position: fixed;
-  inset: 0;
-
-  background-image: radial-gradient(
-    #c3b8f7 2.5px,
-    transparent 2.5px
-  );
-
-  background-size: 28px 28px;
-
-  opacity: 0.5;
-
-  pointer-events: none;
-  z-index: 0;
-}
-
 /* Bubble background */
 
 .about-bubble {

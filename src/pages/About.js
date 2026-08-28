@@ -10,7 +10,7 @@ import PageTemplate from '../components/PageTemplate';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram, faDiscord } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import groupPhoto from "../groupPhoto.png"
+import groupPhoto from "../groupPhoto.jpg"
 
 function AboutPage() {
   // ---------- Mouse Parallax ----------
@@ -55,10 +55,6 @@ function AboutPage() {
       className="about-page"
       onMouseMove={handleMouseMove}
     >
-      {/* ---------- Background ---------- */}
-
-      <div className="about-dots" />
-
       {/* Large floating bubbles */}
 
       <motion.div
