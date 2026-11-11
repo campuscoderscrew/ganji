@@ -50,9 +50,9 @@ async function requestJson(url, { attempts = 4 } = {}) {
   for (let attempt = 1; attempt <= attempts; attempt += 1) {
     let response;
     try {
-      response = await fetch(url, { headers: { Accept: 'application/json' } });
+      response = await fetch(url, { headers: { Accept: 'application/json' }, signal: AbortSignal.timeout(15000) });
     } catch (cause) {
-      lastError = new Error(`Network error calling ${redact(url)}: ${cause.message}`);
+      lastError = new Error(`Network error calling ${redact(url)}: ${redact(cause.message)}`);
       if (attempt < attempts) {
         await sleep(2 ** attempt * 500);
         continue;
@@ -78,7 +78,7 @@ async function requestJson(url, { attempts = 4 } = {}) {
         .filter(Boolean)
         .join(' ');
 
-      throw new Error(`Instagram API error: ${detail}`);
+      throw new Error(`Instagram API error: ${redact(detail)}`);
     }
 
     return body;
@@ -116,7 +116,7 @@ async function fetchAllMedia({ token, limit = 50, maxPages = 20, version = DEFAU
 async function fetchProfile({ token, version = DEFAULT_VERSION }) {
   return requestJson(
     `${API_BASE}/${version}/me` +
-      `?fields=id,username,account_type&access_token=${encodeURIComponent(token)}`
+      `?fields=id,username&access_token=${encodeURIComponent(token)}`
   );
 }
 
@@ -129,7 +129,7 @@ async function fetchProfile({ token, version = DEFAULT_VERSION }) {
  */
 async function refreshToken({ token, version = DEFAULT_VERSION }) {
   const body = await requestJson(
-    `${API_BASE}/${version}/refresh_access_token` +
+    `${API_BASE}/refresh_access_token` +
       `?grant_type=ig_refresh_token&access_token=${encodeURIComponent(token)}`
   );
 

@@ -1,99 +1,22 @@
-import React, { useMemo, useState } from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'motion/react';
+import React, { useState } from 'react';
+import { motion } from 'motion/react';
 import './performances.css';
-import heroImage from '../ComingSoon.png';
-import daydreamImage from '../Chungha.png';
+import { useContent, imageUrl, videoSearch } from '../content';
 import PageTemplate from '../components/PageTemplate';
 
-const performanceMonths = [
-  {
-    month: 'April 2025',
-    spotlight: {
-      title: 'Daydream',
-      artist: 'ENHYPEN',
-      description:
-        'Ganji brought Daydream to UMD Maryland Day with a bright, high-energy stage that leaned into clean formations and expressive transitions.',
-      image: daydreamImage,
-      link: 'https://www.youtube.com/',
-    },
-    entries: [
-      {
-        title: 'Daydream',
-        artist: 'ENHYPEN',
-        venue: 'McKeldin Mall stage',
-        time: '2 P.M.',
-        dancers: 'Rachel, Mariel, Coral, Emma, Ije, Basia, Jelly',
-        image: daydreamImage,
-        videoLink: 'https://www.youtube.com/',
-      },
-      {
-        title: 'Pandora',
-        artist: 'MAVE',
-        venue: 'McKeldin Mall stage',
-        time: '2:45 P.M.',
-        dancers: 'Nandini, Shuan, Meg, Madi',
-        image: heroImage,
-        videoLink: 'https://www.youtube.com/',
-      },
-    ],
-  },
-  {
-    month: 'May 2025',
-    spotlight: {
-      title: 'Campus Spring Showcase',
-      artist: 'Ganji Performance Team',
-      description:
-        'A mix-set performance built for an end-of-semester crowd, blending sharp musical changes with a bigger ensemble look.',
-      image: heroImage,
-      link: 'https://www.youtube.com/',
-    },
-    entries: [
-      {
-        title: 'Campus Spring Showcase',
-        artist: 'Ganji Performance Team',
-        venue: 'Student Union ballroom',
-        time: '7 P.M.',
-        dancers: 'Full performance team',
-        image: heroImage,
-        videoLink: 'https://www.youtube.com/',
-      },
-    ],
-  },
-  {
-    month: 'June 2025',
-    spotlight: {
-      title: 'Summer Cover Stage',
-      artist: 'Special Unit',
-      description:
-        'A smaller summer unit stage focused on performance texture, transitions, and close-up camera-friendly choreography.',
-      image: heroImage,
-      link: 'https://www.youtube.com/',
-    },
-    entries: [],
-  },
-];
-
 function PerformancesPage() {
+  const { content } = useContent();
+  const performanceMonths = Object.entries(content.performances.reduce((months, entry) => {
+    (months[entry.date.slice(0, 7)] ||= []).push(entry); return months;
+  }, {})).sort(([a], [b]) => b.localeCompare(a)).map(([month, entries]) => ({
+    month: new Date(`${month}-01T12:00:00`).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
+    spotlight: entries[0], entries,
+  }));
+  if (!performanceMonths.length) performanceMonths.push({ month: 'Performances', spotlight: { title: 'Coming soon', artist: 'Ganji', description: 'New performances will appear here.', image: 'coming-soon' }, entries: [] });
   const [currentMonthIndex, setCurrentMonthIndex] = useState(0);
 
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const springConfig = { stiffness: 60, damping: 20 };
-  const parallaxX = useSpring(useTransform(mouseX, [-1, 1], [-24, 24]), springConfig);
-  const parallaxY = useSpring(useTransform(mouseY, [-1, 1], [-24, 24]), springConfig);
-  const parallaxXSlow = useSpring(useTransform(mouseX, [-1, 1], [14, -14]), springConfig);
-  const parallaxYSlow = useSpring(useTransform(mouseY, [-1, 1], [14, -14]), springConfig);
 
-  const handleMouseMove = (e) => {
-    const { innerWidth, innerHeight } = window;
-    mouseX.set((e.clientX / innerWidth - 0.5) * 2);
-    mouseY.set((e.clientY / innerHeight - 0.5) * 2);
-  };
-
-  const currentMonth = useMemo(
-    () => performanceMonths[currentMonthIndex],
-    [currentMonthIndex]
-  );
+  const currentMonth = performanceMonths[Math.min(currentMonthIndex, performanceMonths.length - 1)];
 
   const goToPreviousMonth = () => {
     setCurrentMonthIndex((index) =>
@@ -115,35 +38,11 @@ function PerformancesPage() {
   };
 
   return (
-    <div className="performances-page" onMouseMove={handleMouseMove}>
-      <motion.div
-        className="performances-bubble performances-bubble-1"
-        animate={{ y: [0, -22, 0], x: [0, 12, 0] }}
-        transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
-      />
-      <motion.div
-        className="performances-bubble performances-bubble-2"
-        animate={{ y: [0, 18, 0], x: [0, -14, 0] }}
-        transition={{ duration: 11, repeat: Infinity, ease: 'easeInOut' }}
-      />
-
-      <motion.div
-        className="performances-bubble performances-bubble-fg-1"
-        style={{ x: parallaxX, y: parallaxY }}
-      />
-      <motion.div
-        className="performances-bubble performances-bubble-fg-2"
-        style={{ x: parallaxXSlow, y: parallaxYSlow }}
-      />
-
-      <span className="performances-sparkle performances-sparkle-1">✦</span>
-      <span className="performances-sparkle performances-sparkle-2">✧</span>
-      <span className="performances-sparkle performances-sparkle-3">✦</span>
-
+    <div className="performances-page site-page">
       <PageTemplate>
-        <header className="performances-header">
+        <header className="performances-header page-heading">
           <motion.p
-            className="performances-kicker"
+            className="performances-kicker page-kicker"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -151,7 +50,7 @@ function PerformancesPage() {
             On Stage
           </motion.p>
           <motion.h1
-            className="performances-title"
+            className="performances-title page-title"
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1], delay: 0.1 }}
@@ -164,8 +63,8 @@ function PerformancesPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            Want to see more? Check out our YouTube channel{' '}
-            <a href="https://www.youtube.com/" target="_blank" rel="noreferrer">
+            Find Ganji performances on YouTube{' '}
+            <a href="https://www.youtube.com/results?search_query=Ganji+UMD" target="_blank" rel="noreferrer">
               here
             </a>
             .
@@ -180,7 +79,7 @@ function PerformancesPage() {
             transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1], delay: 0.18 }}
           >
             <div className="performances-spotlight-copy">
-              <p className="performances-spotlight-label">Most Recent Performance</p>
+              <p className="performances-spotlight-label">Featured Performance</p>
               <h2>
                 {currentMonth.spotlight.title}
                 <span>{currentMonth.spotlight.artist}</span>
@@ -190,13 +89,13 @@ function PerformancesPage() {
 
             <a
               className="performances-spotlight-media"
-              href={currentMonth.spotlight.link}
+              href={videoSearch(currentMonth.spotlight)}
               target="_blank"
               rel="noreferrer"
-              aria-label={`Watch ${currentMonth.spotlight.title} on YouTube`}
+              aria-label={`Search YouTube for ${currentMonth.spotlight.title}`}
             >
-              <img src={currentMonth.spotlight.image} alt={currentMonth.spotlight.title} />
-              <span className="performances-play-badge">Watch</span>
+              <img src={imageUrl(currentMonth.spotlight.image)} alt={currentMonth.spotlight.title} />
+              <span className="performances-play-badge">Find video</span>
             </a>
           </motion.section>
         </div>
@@ -223,7 +122,7 @@ function PerformancesPage() {
             viewport={{ once: true, amount: 0.4 }}
             transition={{ duration: 0.5 }}
           >
-            <button type="button" onClick={goToPreviousMonth} aria-label="Previous month">
+            <button type="button" onClick={goToPreviousMonth} aria-label="Previous month" disabled={performanceMonths.length < 2}>
               <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
                 <polyline
                   points="15 5 8 12 15 19"
@@ -236,7 +135,7 @@ function PerformancesPage() {
               </svg>
             </button>
             <h2>{currentMonth.month}</h2>
-            <button type="button" onClick={goToNextMonth} aria-label="Next month">
+            <button type="button" onClick={goToNextMonth} aria-label="Next month" disabled={performanceMonths.length < 2}>
               <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
                 <polyline
                   points="9 5 16 12 9 19"
@@ -265,10 +164,10 @@ function PerformancesPage() {
               currentMonth.entries.map((entry, index) => (
                 <motion.a
                   className="performances-entry"
-                  href={entry.videoLink}
+                  href={videoSearch(entry)}
                   target="_blank"
                   rel="noreferrer"
-                  key={`${entry.title}-${entry.artist}`}
+                  key={entry.id}
                   initial={{ opacity: 0, y: 28 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.25 }}
@@ -276,7 +175,7 @@ function PerformancesPage() {
                   whileHover={{ y: -3 }}
                 >
                   <div className="performances-entry-thumb">
-                    <img src={entry.image} alt={entry.title} />
+                    <img src={imageUrl(entry.image)} alt={entry.title} />
                     <span className="performances-entry-chip">YouTube</span>
                   </div>
 

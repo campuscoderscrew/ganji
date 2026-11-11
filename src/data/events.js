@@ -14,6 +14,7 @@
 
 import raw from './instagram.json';
 import adminData from './admin-data.json';
+import { getSiteData, usePreview } from '../lib/preview';
 
 const MONTH_NAMES = [
   'January', 'February', 'March', 'April', 'May', 'June',
@@ -23,8 +24,17 @@ const MONTH_NAMES = [
 /** Badge styles that archive.css actually defines. */
 const KNOWN_TYPES = new Set(['PERFORMANCE', 'WORKSHOP', 'COMPETITION']);
 
-const overrides = adminData.overrides || {};
-const manualEvents = adminData.manualEvents || [];
+/** True when the data came from fixtures rather than the live account. */
+export const isFixtureData = Boolean(raw.fixture);
+
+/** When the sync last ran -- surfaced in the footer so staleness is visible. */
+export const syncedAt = raw.syncedAt;
+
+export const account = raw.account;
+
+export function deriveEvents(data = adminData) {
+const overrides = data.overrides || {};
+const manualEvents = data.manualEvents || [];
 
 /** Applies an admin override on top of a synced post. */
 function withOverrides(post) {
@@ -50,7 +60,7 @@ function normaliseManual(event) {
     source: 'manual',
     // Manual events have no post date, so the event date stands in for the
     // ordering and month-grouping that timestamp normally provides.
-    timestamp: event.timestamp || `${event.date}T12:00:00.000Z`,
+    timestamp: event.timestamp || (event.date ? `${event.date}T12:00:00.000Z` : ''),
   };
 }
 
@@ -69,23 +79,15 @@ function todayKey() {
  * Everything the site knows about, newest first: synced posts with their
  * overrides applied, plus manual events, minus anything hidden.
  */
-export const posts = [
+const posts = [
   ...raw.posts.map(withOverrides),
-  ...manualEvents.filter((event) => event && event.date).map(normaliseManual),
+  ...manualEvents.filter(Boolean).map(normaliseManual),
 ]
   .filter((post) => !post.hidden)
-  .sort((a, b) => b.timestamp.localeCompare(a.timestamp));
+  .sort((a, b) => (b.timestamp || '').localeCompare(a.timestamp || ''));
 
 /** Posts that represent a real event, i.e. everything the Archive shows. */
-export const events = posts.filter((post) => post.isEvent);
-
-/** True when the data came from fixtures rather than the live account. */
-export const isFixtureData = Boolean(raw.fixture);
-
-/** When the sync last ran -- surfaced in the footer so staleness is visible. */
-export const syncedAt = raw.syncedAt;
-
-export const account = raw.account;
+const events = posts.filter((post) => post.isEvent);
 
 /**
  * Archive accordion data, newest month first.
@@ -94,7 +96,7 @@ export const account = raw.account;
  * the page reads as a timeline rather than a filtered list -- the component
  * already renders an empty state for them.
  */
-export const archiveMonths = (() => {
+const archiveMonths = (() => {
   if (events.length === 0) return [];
 
   const today = todayKey();
@@ -104,7 +106,8 @@ export const archiveMonths = (() => {
   const byMonth = new Map();
 
   for (const event of events) {
-    const when = event.date || event.timestamp.slice(0, 10);
+    const when = event.date || event.timestamp?.slice(0, 10);
+    if (!when) continue;
     // The page is titled "Past Events", so anything still to come belongs on
     // the calendar instead. It moves here on its own once the date passes.
     if (when > today) continue;
@@ -117,7 +120,7 @@ export const archiveMonths = (() => {
   // Only months that actually hold something are listed. Filling the gaps
   // between them reads nicely when posts are regular, but a single event
   // announced months ahead would bury the archive under empty accordions.
-  return [...byMonth.keys()].sort().reverse().map((key) => ({
+  const months = [...byMonth.keys()].sort().reverse().map((key) => ({
     month: formatMonth(key),
     events: (byMonth.get(key) || [])
       .slice()
@@ -129,6 +132,9 @@ export const archiveMonths = (() => {
         link: event.permalink,
       })),
   }));
+  const undated = events.filter(event => !event.date && !event.timestamp);
+  if (undated.length) months.unshift({ month: 'Undated events', events: undated.map(event => ({ type: KNOWN_TYPES.has(event.type) ? event.type : 'PERFORMANCE', title: event.title, artist: event.artist, link: event.permalink })) });
+  return months;
 })();
 
 /**
@@ -137,7 +143,7 @@ export const archiveMonths = (() => {
  * The value is an array: two things can land on the same day, and dropping one
  * silently is worse than showing both.
  */
-export const eventsByDate = (() => {
+const eventsByDate = (() => {
   const map = {};
 
   for (const event of events) {
@@ -157,3 +163,9 @@ export const eventsByDate = (() => {
 
   return map;
 })();
+
+  return { posts, events, archiveMonths, eventsByDate };
+}
+
+export const { posts, events, archiveMonths, eventsByDate } = deriveEvents();
+export function useEventData() { usePreview(); return deriveEvents(getSiteData()); }

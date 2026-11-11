@@ -2,6 +2,13 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import './admin.css';
 import instagramData from '../data/instagram.json';
 import { EVENT_TYPES, REPO } from '../config.js';
+import committedData from '../data/admin-data.json';
+import { resolveContent, validateContent } from '../data/site-content';
+import { usePreview, getPreview, savePreview, clearPreview, localPreviewAvailable } from '../lib/preview';
+import { preparePhoto } from '../lib/photos';
+import PhotoPicker from '../components/PhotoPicker';
+import AdminContent from '../components/AdminContent';
+import PreviewNotice from '../components/PreviewNotice';
 import {
   ConflictError,
   clearToken,
@@ -35,6 +42,7 @@ const EMPTY_EVENT = {
   time: '',
   location: '',
   caption: '',
+  image: '',
 };
 
 /** Strips blank strings so they do not override a parsed value with nothing. */
@@ -81,7 +89,7 @@ function formatDate(iso) {
 // Sign-in
 // ---------------------------------------------------------------------------
 
-function SignIn({ onConnect, error, busy }) {
+function SignIn({ onConnect, onPreview, error, busy }) {
   const [value, setValue] = useState('');
 
   return (
@@ -138,7 +146,9 @@ function SignIn({ onConnect, error, busy }) {
         </button>
       </form>
 
-      {error && <p className="admin-error">{error}</p>}
+      {localPreviewAvailable() && <p><a href="http://127.0.0.1:4317/" target="_blank" rel="noreferrer">Connect a test Instagram account ↗</a></p>}
+      {error && <p role="alert" className="admin-error">{error}</p>}
+      {localPreviewAvailable() && <div className="admin-local-option"><button className="admin-button-ghost" disabled={busy} onClick={onPreview}>Try local preview</button><p>Try all controls without a token. Changes stay in this tab and are never sent to GitHub.</p></div>}
 
       <p className="admin-note">
         The token is kept only for this browser tab and is forgotten when you
@@ -154,7 +164,7 @@ function SignIn({ onConnect, error, busy }) {
 // Editor
 // ---------------------------------------------------------------------------
 
-function EventEditor({ event, onSave, onCancel }) {
+function EventEditor({ event, onSave, onCancel, photos, uploadPhoto, pending }) {
   const [draft, setDraft] = useState(() => ({
     ...EMPTY_EVENT,
     ...Object.fromEntries(
@@ -229,6 +239,7 @@ function EventEditor({ event, onSave, onCancel }) {
           </label>
         </div>
 
+        <fieldset className="admin-image-field"><legend>Event photo</legend><PhotoPicker value={draft.image} onChange={value=>setDraft(current=>({...current,image:value}))} photos={photos} uploadPhoto={uploadPhoto} pending={pending}/></fieldset>
         <p className="admin-hint">
           An event needs a date to appear on the calendar. Without one it still
           shows in the Archive.
@@ -258,15 +269,20 @@ function EventEditor({ event, onSave, onCancel }) {
 
 function AdminPage() {
   const [token, setTokenState] = useState(getToken);
-  const [user, setUser] = useState(null);
+  const preview = usePreview();
+  const [user, setUser] = useState(() => getPreview() ? {login:'Local preview',preview:true} : null);
   const [signInError, setSignInError] = useState('');
   const [busy, setBusy] = useState(false);
 
-  const [adminData, setAdminData] = useState(null);
+  const [adminData, setAdminData] = useState(() => getPreview()?.data || null);
   const [sha, setSha] = useState(null);
   const [dirty, setDirty] = useState(false);
   const [status, setStatus] = useState('');
   const [editing, setEditing] = useState(null);
+  const [section, setSection] = useState('events');
+  const [pending, setPending] = useState([]);
+  const [uploadCount, setUploadCount] = useState(0);
+  const content = resolveContent(adminData || {});
 
   const connect = useCallback(async (candidate) => {
     setBusy(true);
@@ -277,7 +293,9 @@ function AdminPage() {
       setToken(candidate);
       setTokenState(candidate);
       setUser(profile);
+      clearPreview();
       setAdminData(file.data);
+      setPending([]);
       setSha(file.sha);
     } catch (error) {
       setSignInError(error.message);
@@ -307,8 +325,31 @@ function AdminPage() {
     return () => window.removeEventListener('beforeunload', warn);
   }, [dirty]);
 
+  useEffect(() => {
+    if (user?.preview && !preview) { setUser(null); setAdminData(null); setPending([]); setDirty(false); }
+  }, [preview, user]);
+
+  const startPreview = () => {
+    const data = {...committedData,content:resolveContent(committedData)};
+    try { savePreview(data); clearToken(); setTokenState(''); setUser({login:'Local preview',preview:true}); setAdminData(data); setPending([]); setStatus(''); }
+    catch(error) { setSignInError(error.message); }
+  };
+  const changeContent = value => {setAdminData(current=>({...current,content:value}));setDirty(true);};
+  const uploadPhoto = async file => {
+    setUploadCount(count=>count+1);
+    try {
+      const photo = await preparePhoto(file);
+      if (pending.length >= 20 || pending.reduce((total,item)=>total+item.size,0)+photo.size>10*1024*1024) throw new Error('Save these photos before adding more (maximum 10 MB per save).');
+      setPending(files=>[...files,photo]);
+      setAdminData(current=>{const content=resolveContent(current);return {...current,content:{...content,photos:[...content.photos,{id:photo.id,title:photo.title,image:photo.image}]}};});
+      setDirty(true);return photo.image;
+    } finally {setUploadCount(count=>count-1);}
+  };
   const signOut = () => {
     clearToken();
+    if(user?.preview) clearPreview();
+    setPending([]);
+    setEditing(null);
     setTokenState('');
     setUser(null);
     setAdminData(null);
@@ -358,6 +399,7 @@ function AdminPage() {
     } else {
       const original = instagramData.posts.find((post) => post.id === target.id);
       const diff = changedFieldsOnly(patch, original);
+      if (!original.isEvent && (patch.date || patch.type)) diff.isEvent = true;
 
       setAdminData((current) => {
         const existing = current.overrides[target.id] || {};
@@ -423,17 +465,19 @@ function AdminPage() {
     setBusy(true);
     setStatus('');
     try {
+      const data = {...adminData,content:validateContent(resolveContent(adminData)),overrides:adminData.overrides || {},manualEvents:adminData.manualEvents || []};
+      if (user.preview) {
+        savePreview(data,pending);setAdminData(data);setPending([]);setDirty(false);setStatus('Preview saved in this tab. Open the website to see your changes.');return;
+      }
       const result = await saveAdminData({
         token,
-        data: {
-          _README: adminData._README,
-          overrides: adminData.overrides || {},
-          manualEvents: adminData.manualEvents || [],
-        },
+        data,
+        files:pending,
         sha,
         login: user.login,
       });
       setSha(result.sha);
+      setPending([]);
       setAdminData(result.data);
       setDirty(false);
       setStatus('Saved. The site rebuilds automatically in a few minutes.');
@@ -454,7 +498,7 @@ function AdminPage() {
         <header className="admin-header">
           <h1>Ganji Admin</h1>
         </header>
-        <SignIn onConnect={connect} error={signInError} busy={busy} />
+        <SignIn onConnect={connect} onPreview={startPreview} error={signInError} busy={busy} />
       </div>
     );
   }
@@ -472,8 +516,12 @@ function AdminPage() {
         </div>
       </header>
 
+      <PreviewNotice />
+      {localPreviewAvailable() && <div className="admin-context"><a href="http://127.0.0.1:4317/" target="_blank" rel="noreferrer">Connect or sync test Instagram ↗</a></div>}
+      <div className="admin-context"><a href="/">View website ↗</a><p>{user.preview ? 'Local preview: no repository writes.' : `Save to site publishes to ${REPO.owner}/${REPO.name}, branch ${REPO.branch}.`}</p></div>
+      <nav className="admin-sections" aria-label="Admin sections">{[['events','Events'],['photos','Photos'],['officers','Officers'],['about','About'],['performances','Performances']].map(([key,label])=><button type="button" key={key} aria-current={section===key?'page':undefined} className={section===key?'is-active':''} disabled={busy || uploadCount>0} onClick={()=>{setSection(key);setEditing(null);}}>{label}</button>)}</nav>
       <div className="admin-toolbar">
-        <button
+        {section==='events' && <button
           type="button"
           className="admin-button"
           onClick={() =>
@@ -486,7 +534,7 @@ function AdminPage() {
           }
         >
           + New event
-        </button>
+        </button>}
 
         <div className="admin-toolbar-right">
           {dirty && <span className="admin-dirty">Unsaved changes</span>}
@@ -494,16 +542,17 @@ function AdminPage() {
             type="button"
             className="admin-button"
             onClick={save}
-            disabled={!dirty || busy}
+            disabled={!dirty || busy || uploadCount>0}
           >
-            {busy ? 'Saving...' : 'Save to site'}
+            {busy ? 'Saving...' : user.preview ? 'Save preview' : 'Save to site'}
           </button>
         </div>
       </div>
 
-      {status && <p className="admin-status">{status}</p>}
+      {status && <p className="admin-status" role="status">{status}</p>}
 
-      <div className="admin-list">
+      {section !== 'events' && <AdminContent key={section} section={section} content={content} onChange={changeContent} uploadPhoto={uploadPhoto} pending={pending} busy={busy || uploadCount>0} />}
+      {section === 'events' && <div className="admin-list">
         {rows.length === 0 && <p className="admin-empty">No events yet.</p>}
 
         {rows.map((row) => (
@@ -555,11 +604,14 @@ function AdminPage() {
             </div>
           </div>
         ))}
-      </div>
+      </div>}
 
       {editing && (
         <EventEditor
           event={editing}
+          photos={content.photos}
+          uploadPhoto={uploadPhoto}
+          pending={pending}
           onSave={applyEdit}
           onCancel={() => setEditing(null)}
         />

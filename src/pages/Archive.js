@@ -8,10 +8,11 @@ import {
 } from 'motion/react';
 import './archive.css';
 import PageTemplate from '../components/PageTemplate';
-import { archiveMonths as archiveData } from '../data/events.js';
+import { useEventData } from '../data/events.js';
 import SyncStatus from '../components/SyncStatus';
 
 function ArchivePage() {
+  const { archiveMonths: archiveData } = useEventData();
   // The newest month is listed first and opens by default. An empty archive
   // leaves nothing expanded rather than crashing on archiveData[0].
   const [expandedMonth, setExpandedMonth] = useState(
@@ -101,7 +102,7 @@ function ArchivePage() {
                   whileHover={{ backgroundColor: 'rgba(124, 108, 246, 0.18)' }}
                   whileTap={{ backgroundColor: 'rgba(124, 108, 246, 0.3)' }}
                 >
-                  <span className="archive-month-name">{month} Events</span>
+                  <span className="archive-month-name">{month === 'Undated events' ? month : `${month} Events`}</span>
                   <motion.span
                     className="archive-chevron"
                     animate={{ rotate: isOpen ? 180 : 0 }}

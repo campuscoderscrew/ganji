@@ -1,129 +1,26 @@
 import React from 'react';
-import {
-  motion,
-  useMotionValue,
-  useSpring,
-  useTransform,
-} from 'motion/react';
+import { motion } from 'motion/react';
 import './about.css';
 import PageTemplate from '../components/PageTemplate';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInstagram, faDiscord } from '@fortawesome/free-brands-svg-icons';
-import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import groupPhoto from "../groupPhoto.jpg"
+import { faInstagram } from '@fortawesome/free-brands-svg-icons';
+
+import { useContent, imageUrl } from '../content';
 
 function AboutPage() {
-  // ---------- Mouse Parallax ----------
-
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  const springConfig = {
-    stiffness: 60,
-    damping: 20,
-  };
-
-  const parallaxX = useSpring(
-    useTransform(mouseX, [-1, 1], [-24, 24]),
-    springConfig
-  );
-
-  const parallaxY = useSpring(
-    useTransform(mouseY, [-1, 1], [-24, 24]),
-    springConfig
-  );
-
-  const parallaxXSlow = useSpring(
-    useTransform(mouseX, [-1, 1], [14, -14]),
-    springConfig
-  );
-
-  const parallaxYSlow = useSpring(
-    useTransform(mouseY, [-1, 1], [14, -14]),
-    springConfig
-  );
-
-  const handleMouseMove = (e) => {
-    const { innerWidth, innerHeight } = window;
-
-    mouseX.set((e.clientX / innerWidth - 0.5) * 2);
-    mouseY.set((e.clientY / innerHeight - 0.5) * 2);
-  };
+  const { content: { about } } = useContent();
 
   return (
     <div
-      className="about-page"
-      onMouseMove={handleMouseMove}
+      className="about-page site-page"
     >
-      {/* Large floating bubbles */}
-
-      <motion.div
-        className="about-bubble about-bubble-1"
-        animate={{
-          y: [0, -22, 0],
-          x: [0, 12, 0],
-        }}
-        transition={{
-          duration: 9,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
-      />
-
-      <motion.div
-        className="about-bubble about-bubble-2"
-        animate={{
-          y: [0, 18, 0],
-          x: [0, -14, 0],
-        }}
-        transition={{
-          duration: 11,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
-      />
-
-      {/* Foreground glass bubbles */}
-
-      <motion.div
-        className="about-bubble about-bubble-fg-1"
-        style={{
-          x: parallaxX,
-          y: parallaxY,
-        }}
-      />
-
-      <motion.div
-        className="about-bubble about-bubble-fg-2"
-        style={{
-          x: parallaxXSlow,
-          y: parallaxYSlow,
-        }}
-      />
-
-      {/* ---------- Sparkles ---------- */}
-
-      <span className="about-sparkle about-sparkle-1">
-        ✦
-      </span>
-
-      <span className="about-sparkle about-sparkle-2">
-        ✧
-      </span>
-
-      <span className="about-sparkle about-sparkle-3">
-        ✦
-      </span>
-
-      {/* ---------- Page ---------- */}
-
-      <PageTemplate activePath="/about">
+      <PageTemplate>
 
         {/* Hero */}
 
-        <header className="about-header">
+        <header className="about-header page-heading">
           <motion.p
-            className="about-kicker"
+            className="about-kicker page-kicker"
             initial={{
               opacity: 0,
               y: 10,
@@ -140,7 +37,7 @@ function AboutPage() {
           </motion.p>
 
           <motion.h1
-            className="about-title"
+            className="about-title page-title"
             initial={{
               opacity: 0,
               y: 24,
@@ -160,26 +57,6 @@ function AboutPage() {
         </header>
 
         {/* ---------- Intro ---------- */}
-
-        <motion.section
-          className="about-intro"
-          initial={{
-            opacity: 0,
-            y: 30,
-          }}
-          whileInView={{
-            opacity: 1,
-            y: 0,
-          }}
-          viewport={{
-            once: true,
-            amount: 0.3,
-          }}
-          transition={{
-            duration: 0.6,
-          }}
-        >
-        </motion.section>
 
         {/* ---------- Who We Are ---------- */}
 
@@ -207,12 +84,7 @@ function AboutPage() {
                 Who We Are
               </p>
               <p>
-                "Korean Pop Dance Club" (otherwise known as Ganji) was established for 
-                the purpose of exploring Korean Culture and learning K-Pop choreography 
-                in a relaxed, non-judgmental environment. We hold weekly workshops that 
-                are open to anyone in the UMD community and no prior dance experience is 
-                required! We also perform at various events across campus like TASA's 
-                Night Market, JASA's Taste of Japan, and more!
+                {about.description}
               </p>
             </div>
           </div>
@@ -239,7 +111,7 @@ function AboutPage() {
           }}
         >
           <div className="about-photo">
-            <img src={groupPhoto} alt="Ganji group" />
+            <img src={imageUrl(about.image)} alt="Ganji group" />
           </div>
         </motion.section>
 
@@ -265,37 +137,21 @@ function AboutPage() {
         >
           <div className="about-contact-card">
             <p className="about-card-kicker">
-              Contact Us!
+              Keep in Touch
             </p>
-            
+
             <div className="about-socials">
               <a
-                href="https://www.instagram.com/ganjiumd"
+                href={about.instagram || 'https://www.instagram.com/ganjiumd/'}
                 className="about-social-link"
                 aria-label="Instagram"
                 target="_blank"
-                rel="noreferrer"  
-              >
-                <FontAwesomeIcon icon={faInstagram} />
-              </a>
-
-              <a
-                href="#"
-                className="about-social-link"
-                aria-label="Discord"
-                target="_blank"
                 rel="noreferrer"
               >
-                <FontAwesomeIcon icon={faDiscord} />
+                <FontAwesomeIcon icon={faInstagram} /><span>Message us on Instagram</span>
               </a>
-
-              <a
-                href="mailto:your-email@example.com"
-                className="about-social-link"
-                aria-label="Email"
-              >
-                <FontAwesomeIcon icon={faEnvelope} />
-              </a>
+              {about.discord && <a className="about-social-link" href={about.discord} target="_blank" rel="noreferrer">Discord</a>}
+              {about.email && <a className="about-social-link" href={`mailto:${about.email}`}>Email us</a>}
             </div>
           </div>
         </motion.section>

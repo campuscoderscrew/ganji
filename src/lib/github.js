@@ -88,7 +88,9 @@ async function request(path, { token, method = 'GET', body } = {}) {
 
   if (!response.ok) {
     const message = payload && payload.message ? payload.message : `HTTP ${response.status}`;
-    throw new Error(`GitHub: ${message}`);
+    const error = new Error(`GitHub: ${message}`);
+    error.status = response.status;
+    throw error;
   }
 
   return payload;
@@ -155,26 +157,44 @@ export async function fetchAdminData(token) {
  * text. That is deliberate: the dashboard writes a data file, so no value an
  * officer types -- however odd -- can become executable code in the build.
  */
-export async function saveAdminData({ token, data, sha, login }) {
+export async function saveAdminData({ token, data, sha, login, files = [] }) {
   const body = {
     ...data,
     updatedAt: new Date().toISOString(),
     updatedBy: login,
   };
 
+  const message = `Update site via admin dashboard (${login})`;
+  if (files.length) {
+    const repo = `/repos/${REPO.owner}/${REPO.name}`;
+    const branch = encodeURIComponent(REPO.branch);
+    const head = await request(`${repo}/git/ref/heads/${branch}`, { token });
+    const base = head.object.sha;
+    // Read at the captured commit, not the moving branch, to avoid a check/write race.
+    const existing = await request(`${repo}/contents/${ADMIN_DATA_PATH}?ref=${base}`, { token });
+    if (existing.sha !== sha) throw new ConflictError('Someone else saved changes first.');
+    const commit = await request(`${repo}/git/commits/${base}`, { token });
+    const tree = [];
+    for (const file of files) {
+      if (!/^public\/uploads\/[a-zA-Z0-9-]+\.(png|jpg|webp)$/.test(file.path)) throw new Error('Invalid photo path.');
+      const blob = await request(`${repo}/git/blobs`, { token, method:'POST', body:{content:file.content,encoding:'base64'} });
+      tree.push({path:file.path,mode:'100644',type:'blob',sha:blob.sha});
+    }
+    const jsonBlob = await request(`${repo}/git/blobs`, { token, method:'POST', body:{content:encodeBase64(JSON.stringify(body,null,2)+'\n'),encoding:'base64'} });
+    tree.push({path:ADMIN_DATA_PATH,mode:'100644',type:'blob',sha:jsonBlob.sha});
+    const nextTree = await request(`${repo}/git/trees`, { token, method:'POST', body:{base_tree:commit.tree.sha,tree} });
+    const nextCommit = await request(`${repo}/git/commits`, { token, method:'POST', body:{message,tree:nextTree.sha,parents:[base]} });
+    try {
+      await request(`${repo}/git/refs/heads/${branch}`, { token, method:'PATCH', body:{sha:nextCommit.sha,force:false} });
+    } catch (error) {
+      if (error.status === 422) throw new ConflictError('The branch changed while saving. Reload before trying again.');
+      throw error;
+    }
+    return {sha:jsonBlob.sha,data:body};
+  }
   const result = await request(
     `/repos/${REPO.owner}/${REPO.name}/contents/${ADMIN_DATA_PATH}`,
-    {
-      token,
-      method: 'PUT',
-      body: {
-        message: `Update events via admin dashboard (${login})`,
-        content: encodeBase64(`${JSON.stringify(body, null, 2)}\n`),
-        sha,
-        branch: REPO.branch,
-      },
-    }
+    { token, method:'PUT', body:{message,content:encodeBase64(JSON.stringify(body,null,2)+'\n'),sha,branch:REPO.branch} }
   );
-
-  return { sha: result.content.sha, data: body };
+  return {sha:result.content.sha,data:body};
 }

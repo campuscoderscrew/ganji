@@ -124,3 +124,26 @@ Design notes worth knowing before changing any of it:
 - **`/admin` is public and unlisted.** `robots.txt` keeps it out of search
   results, which is housekeeping. The actual protection is that the page can do
   nothing at all without a token GitHub accepts.
+
+
+## Page content and photos
+
+The existing GitHub sign-in and event override flow remain in place. The dashboard now has Events, Photos, Officers, About, and Performances sections. All changes are collected until **Save to site**. The target is the repository and branch in `src/config.js` (currently `campuscoderscrew/ganji`, `main`).
+
+- **Photos:** upload JPEG, PNG, or WebP files up to 4 MB each. Up to 20 files / 10 MB can be pending in one save. Photos are placed in `public/uploads/`; library names can be edited. Removing a library entry does not delete the underlying file or break existing page references.
+- **Events:** select or upload an event poster. An undated manual event appears under **Undated events** in Archive and stays off the calendar until dated.
+- **Officers:** add, edit, or delete people, positions, and portraits.
+- **About:** edit the club description, group photo, workshop introduction photo, officer year, Instagram URL, optional Discord URL, and optional contact email.
+- **Performances:** add, edit, or delete performances, including date, title, artist, description, venue, time, dancers, photo, and video URL.
+
+Page content is stored in `content` inside `src/data/admin-data.json`, separate from generated Instagram data. Older data files without this field use the existing page content as defaults. The sync never overwrites manual content.
+
+When photos are pending, the GitHub client saves image blobs and the JSON file in one commit based on the existing repository tree. The JSON SHA is checked at the captured parent commit, and the branch update uses `force: false`. A concurrent change is refused; no image or page reference is published halfway through. Saves without new photos retain the original Contents API flow.
+
+## Test without publishing
+
+On `http://127.0.0.1:3000/admin`, choose **Try local preview**. No GitHub token is needed and no repository requests are made. Edit content, press **Done**, then **Save preview**. Use **View website** in the same tab to see the result. Preview data is held in that tab’s session storage; it is not shared with another tab or another person. **Reset preview** discards it. Large photos can exceed the browser’s preview storage quota; use smaller images if that happens.
+
+This option is restricted to localhost/loopback hostnames and does not give access to publish on GitHub. The normal hosted dashboard still requires GitHub repository write permission.
+
+Automated checks: `npm run test:parser`, `npm test -- --watchAll=false --runInBand`, `npm run build`, and `npm run test:e2e`. Browser tests use Microsoft Edge on Windows; on Linux install Playwright Chromium first with `npx playwright install chromium`. GitHub requests in browser tests are mocked, so tests never publish demo data.

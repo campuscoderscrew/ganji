@@ -1,5 +1,8 @@
 import React from 'react';
 import './pageTemplate.css';
+import '../site.css';
+import PageBackground from './PageBackground';
+import PreviewNotice from './PreviewNotice';
 
 /**
  * Content wrapper for a page's main body.
@@ -14,7 +17,7 @@ function PageTemplate({ children, contentClassName = '', contentTag: ContentTag 
     .filter(Boolean)
     .join(' ');
 
-  return <ContentTag className={contentClasses}>{children}</ContentTag>;
+  return <><PageBackground /><ContentTag className={contentClasses}><PreviewNotice />{children}</ContentTag></>;
 }
 
 export default PageTemplate;

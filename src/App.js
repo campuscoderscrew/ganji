@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import './pages/events.css';
 import holdImage from './ComingSoon.png';
 import PageTemplate from './components/PageTemplate';
-import { eventsByDate } from './data/events.js';
+import { useEventData } from './data/events.js';
+import { imageUrl } from './content';
 import SyncStatus from './components/SyncStatus';
 
 function EventsPage() {
+  const { eventsByDate } = useEventData();
   const months = [
     'January',
     'February',
@@ -102,7 +104,7 @@ function EventsPage() {
                             openModal(
                               event.label,
                               event.description,
-                              event.image || holdImage
+                              event.image ? imageUrl(event.image) : holdImage
                             )
                           }
                         >

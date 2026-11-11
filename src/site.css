@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+:root { --accent: #7c6cf6; --surface: #211d2c; --text-on-dark: #f7f3ff; --card-border: #ffffff18; --card-shadow: 0 12px 32px #34196e26; --heading-font: 'Caveat', cursive; --body-font: 'Space Grotesk', Arial, sans-serif; }
+* { box-sizing: border-box; }
+html { overflow-y: scroll; scroll-behavior: smooth; }
+body { margin: 0; background: #ededff; color: #35333f; font-family: var(--body-font); }
+button, input, select, textarea { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+a { color: #671bda; text-underline-offset: 3px; }
+button:disabled { opacity: .5; cursor: default; }
+:focus-visible { outline: 3px solid #b66cff; outline-offset: 4px; }
+img { max-width: 100%; }
+[id] { scroll-margin-top: calc(var(--gnav-height, 90px) + 24px); }
+.site-page { position: relative; min-height: 100dvh; width: 100%; padding: var(--gnav-height, 90px) 0 0; background: radial-gradient(circle at 20% 0%, #e4ddff 0%, #ededff 45%, #e6e6fb 100%); overflow-x: clip; font-family: var(--body-font); }
+.site-page .page-heading { position: relative; z-index: 2; padding: 64px 20px 48px; text-align: center; }
+.site-page .page-title { max-width: 1000px; margin: 0 auto; font-family: var(--heading-font); font-size: clamp(2.6rem, 10vw, 7.5rem); font-style: italic; line-height: 1.05; background: linear-gradient(60deg, #d77beb 30%, #7c6cf6 70%); background-clip: text; -webkit-background-clip: text; color: transparent; overflow-wrap: anywhere; }
+.site-page .page-kicker { margin: 0 0 12px; font-size: .8rem; font-weight: 600; letter-spacing: .24em; text-transform: uppercase; color: #7660d0; }
+.page-subtitle { max-width: 580px; margin: 18px auto 0; color: #4a4a5a; line-height: 1.7; }
+.site-background { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+.site-orb { position: absolute; width: 280px; height: 280px; border-radius: 42% 58% 65% 35% / 45% 40% 60% 55%; background: linear-gradient(135deg, #b9a3ff, #7c6cf6 30%, #f3a8e0 65%, #a0d8ff); box-shadow: inset -12px -12px 30px #1f1f1f26, inset 12px 12px 24px #ffffff99, 0 15px 35px #671bda2e; }
+.site-orb-one { top: -80px; left: -100px; animation: float-orb 10s ease-in-out infinite; }
+.site-orb-two { bottom: -110px; right: -100px; animation: float-orb 12s ease-in-out infinite reverse; }
+.site-sparkle { position: absolute; color: #c877ee; font-size: 1.6rem; }
+.site-sparkle-one { top: 22%; right: 10%; }.site-sparkle-two { bottom: 20%; left: 6%; }
+@keyframes float-orb { 50% { transform: translate(10px, -18px) rotate(12deg); } }
+.site-button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: 999px; background: linear-gradient(135deg, #7c6cf6, #c877ee); color: #fff; padding: 12px 24px; min-height: 44px; text-decoration: none; font-weight: 600; cursor: pointer; }
+.site-empty { padding: 28px; text-align: center; color: #4a4a5a; line-height: 1.7; }
+.about-section, .about-photo-section, .about-contact, .archive-accordion, .performances-spotlight-wrap, .performances-list-section, .ws-description-section-wrap { max-width: 980px; }
+.about-socials { flex-wrap: wrap; gap: 16px; }
+.about-social-link { width: auto; min-width: 58px; gap: 12px; padding: 14px 20px; font-size: 1rem; }
+.about-photo img { width: 100%; max-width: none; }
+.about-card-kicker { font-size: 1.05rem; }
+.icons-and-positions { grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 20px; }
+.board-member { width: 100%; min-width: 0; }.officer-text-box { width: 100%; height: 100%; padding: 12px; background: var(--surface); }.board-circle { width: 100%; height: auto; aspect-ratio: 1; margin: 0; border-radius: 12px; }.board-name { font-size: 1rem; overflow-wrap: anywhere; }.board-position { font-size: .8rem; line-height: 1.6; }
+.ws-description-section-wrap { padding-top: 0; }.ws-description-section { background: var(--surface); }.ws-image { display: block; width: 100%; height: 100%; min-height: 280px; max-height: 400px; object-fit: cover; }.ws-name { padding: 12px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }.ws { margin: 0 0 16px; background: var(--surface); }.ws-wrap { padding: 0 20px; }.workshops-list { padding: 0 0 80px; }.list-title-wrap { padding: 36px 20px; }
+.archive-event-row { min-width: 0; }.archive-event-title { min-width: 0; overflow-wrap: anywhere; }
+.notfound-shell { min-height: calc(100dvh - var(--gnav-height, 90px)); padding: 40px 20px; }.notfound-code { margin-left: 0; }
+@media (max-width: 880px) { .ws-description-section { grid-template-columns: 1fr; }.ws-image { min-height: 0; max-height: 340px; object-fit: contain; background: #17131e; } }
+@media (max-width: 640px) { .site-page .page-heading { padding: 40px 20px 32px; }.site-page .page-kicker { font-size: .7rem; letter-spacing: .18em; }.site-orb { width: 200px; height: 200px; opacity: .65; }.site-sparkle { display: none; }.page-subtitle, .performances-subtitle { font-size: .9rem; }.about-card, .about-contact-card { padding: 28px 22px; }.archive-month-header { padding: 20px; }.archive-event-row { flex-wrap: wrap; gap: 8px; padding: 14px 8px; }.archive-badge { font-size: .6rem; }.archive-event-title { flex-basis: calc(100% - 30px); order: 2; }.archive-event-arrow { margin-left: auto; }.performances-list-cta-wrap { padding-bottom: 44px; }.performances-month-switcher h2 { font-size: 2.4rem; }.performances-spotlight-copy { padding: 28px 22px; }.performances-spotlight-media img { min-height: 0; max-height: 400px; object-fit: contain; }.performances-entry-copy h3 span { display: block; margin: 10px 0 0; }.about-section, .about-photo-section { padding-bottom: 28px; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+.gnav-brand-mark { background: #272133; }.gnav-brand-mark img { object-fit: contain; padding: 2px; }
+.about-card, .about-contact-card, .archive-month-card, .performances-spotlight, .performances-entry, .performances-empty-state { background: var(--surface); }
+
+.event-dialog .page-kicker { color: #c9bdff; }
+
+.preview-notice { margin: 16px auto; max-width: 920px; padding: 14px 20px; background: #fff3c9; border: 1px solid #c7ab53; border-radius: 12px; color: #534214; font: 14px var(--body-font); line-height: 1.5; }.preview-notice button { margin-left: 8px; color: #534214; background: none; border: 0; text-decoration: underline; cursor: pointer; }

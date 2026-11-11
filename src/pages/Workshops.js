@@ -1,29 +1,14 @@
 import React from 'react';
 import './workshops.css';
-import { motion, useMotionValue, useSpring, useTransform } from 'motion/react';
-import placeholder from '../icon.jpg';
+import { motion } from 'motion/react';
+import { useContent, imageUrl } from '../content';
 import PageTemplate from '../components/PageTemplate';
+import { useEventData } from '../data/events';
 
 function WorkshopsPage() {
-  const workshops = [
-    { name: 'Workshop 1', link: '[Details]' },
-    { name: 'Workshop 2', link: '[Details]' },
-    { name: 'Workshop 3', link: '[Details]' },
-  ];
-
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const springConfig = { stiffness: 60, damping: 20 };
-  const parallaxX = useSpring(useTransform(mouseX, [-1, 1], [-24, 24]), springConfig);
-  const parallaxY = useSpring(useTransform(mouseY, [-1, 1], [-24, 24]), springConfig);
-  const parallaxXSlow = useSpring(useTransform(mouseX, [-1, 1], [14, -14]), springConfig);
-  const parallaxYSlow = useSpring(useTransform(mouseY, [-1, 1], [14, -14]), springConfig);
-
-  const handleMouseMove = (e) => {
-    const { innerWidth, innerHeight } = window;
-    mouseX.set((e.clientX / innerWidth - 0.5) * 2);
-    mouseY.set((e.clientY / innerHeight - 0.5) * 2);
-  };
+  const { content } = useContent();
+  const { events } = useEventData();
+  const workshops = events.filter(event => event.type === 'WORKSHOP');
 
   const scrollToList = () => {
     document.getElementById('workshops-list')?.scrollIntoView({
@@ -33,46 +18,22 @@ function WorkshopsPage() {
   };
 
   return (
-    <div className="workshop-page" onMouseMove={handleMouseMove}>
-      <motion.div
-        className="performances-bubble performances-bubble-1"
-        animate={{ y: [0, -22, 0], x: [0, 12, 0] }}
-        transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
-      />
-      <motion.div
-        className="performances-bubble performances-bubble-2"
-        animate={{ y: [0, 18, 0], x: [0, -14, 0] }}
-        transition={{ duration: 11, repeat: Infinity, ease: 'easeInOut' }}
-      />
-
-      <motion.div
-        className="performances-bubble performances-bubble-fg-1"
-        style={{ x: parallaxX, y: parallaxY }}
-      />
-      <motion.div
-        className="performances-bubble performances-bubble-fg-2"
-        style={{ x: parallaxXSlow, y: parallaxYSlow }}
-      />
-
-      <span className="performances-sparkle performances-sparkle-1">✦</span>
-      <span className="performances-sparkle performances-sparkle-2">✧</span>
-      <span className="performances-sparkle performances-sparkle-3">✦</span>
-      
+    <div className="workshop-page site-page">
       <PageTemplate>
 
-        <div className="ws-title-section">
-          <motion.p 
-          className="ws-title-p"
+        <div className="ws-title-section page-heading">
+          <motion.p
+          className="ws-title-p page-kicker"
           initial={{ opacity: 0, y: 36 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1], delay: 0.18 }}
           >come learn</motion.p>
 
-          <motion.h1 
+          <motion.h1
           initial={{ opacity: 0, y: 36 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1], delay: 0.18 }}
-          className="ws-title">Workshops</motion.h1>
+          className="ws-title page-title">Workshops</motion.h1>
         </div>
 
         <div className="ws-description-section-wrap">
@@ -82,14 +43,14 @@ function WorkshopsPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1], delay: 0.18 }}>
           <div>
-            <h1 className="what-ws"> What are workshops? </h1>
+            <h2 className="what-ws"> What are workshops? </h2>
             <p className="ws-description">
               Workshops are how we engage with our student body, meaning everyone is
-              welcome! Learn today&apos;s K-POP hit dances with Ganji members! See our upcoming 
+              welcome! Learn today&apos;s K-POP hit dances with Ganji members! Browse our
               workshops below!
             </p>
           </div>
-          <img src={placeholder} alt="Most Recent Workshop" className="ws-image" />
+          <img src={imageUrl(content.about.workshopImage)} alt="Most Recent Workshop" className="ws-image" />
         </motion.div>
         </div>
 
@@ -108,12 +69,13 @@ function WorkshopsPage() {
           </motion.button>
           </div>
 
-          <div className="workshops-list">
-          {workshops.map((ws, index) => (
-            <div className="ws-wrap">
-            <div className="ws" key={index}>
+          <div className="workshops-list" id="workshops-list">
+          {workshops.length === 0 && <p className="site-empty">No workshops posted yet. Check back soon!</p>}
+          {workshops.map((ws) => (
+            <div className="ws-wrap" key={ws.id}>
+            <div className="ws">
               <p className="ws-name">
-                {ws.name} <a href="Events.js" className="ws-link">{ws.link}</a>
+                {ws.title} <a href={ws.permalink || "/"} className="ws-link">View event</a>
               </p>
             </div>
             </div>

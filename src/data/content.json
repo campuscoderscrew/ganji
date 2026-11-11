@@ -1,0 +1,111 @@
+{
+  "performances": [
+    {
+      "id": "performance-0-0",
+      "date": "2025-04-01",
+      "title": "Daydream",
+      "artist": "ENHYPEN",
+      "description": "Ganji brought Daydream to UMD Maryland Day with a bright, high-energy stage that leaned into clean formations and expressive transitions.",
+      "image": "chungha",
+      "venue": "McKeldin Mall stage",
+      "time": "2 P.M.",
+      "dancers": "Rachel, Mariel, Coral, Emma, Ije, Basia, Jelly",
+      "videoLink": ""
+    },
+    {
+      "id": "performance-0-1",
+      "date": "2025-04-01",
+      "title": "Pandora",
+      "artist": "MAVE",
+      "description": "Ganji brought Daydream to UMD Maryland Day with a bright, high-energy stage that leaned into clean formations and expressive transitions.",
+      "image": "coming-soon",
+      "venue": "McKeldin Mall stage",
+      "time": "2:45 P.M.",
+      "dancers": "Nandini, Shuan, Meg, Madi",
+      "videoLink": ""
+    },
+    {
+      "id": "performance-1-0",
+      "date": "2025-05-01",
+      "title": "Campus Spring Showcase",
+      "artist": "Ganji Performance Team",
+      "description": "A mix-set performance built for an end-of-semester crowd, blending sharp musical changes with a bigger ensemble look.",
+      "image": "coming-soon",
+      "venue": "Student Union ballroom",
+      "time": "7 P.M.",
+      "dancers": "Full performance team",
+      "videoLink": ""
+    },
+    {
+      "id": "performance-2-0",
+      "date": "2025-06-01",
+      "title": "Summer Cover Stage",
+      "artist": "Special Unit",
+      "description": "A smaller summer unit stage focused on performance texture, transitions, and close-up camera-friendly choreography.",
+      "image": "coming-soon",
+      "venue": "",
+      "time": "",
+      "dancers": "",
+      "videoLink": ""
+    }
+  ],
+  "officers": [
+    {
+      "id": "officer-0",
+      "name": "First Last",
+      "position": "President",
+      "image": "icon"
+    },
+    {
+      "id": "officer-1",
+      "name": "First Last",
+      "position": "Vice President",
+      "image": "icon"
+    },
+    {
+      "id": "officer-2",
+      "name": "First Last",
+      "position": "Treasurer",
+      "image": "icon"
+    },
+    {
+      "id": "officer-3",
+      "name": "First Last",
+      "position": "Secretary",
+      "image": "icon"
+    },
+    {
+      "id": "officer-4",
+      "name": "First Last",
+      "position": "Position",
+      "image": "icon"
+    },
+    {
+      "id": "officer-5",
+      "name": "First Last",
+      "position": "Position",
+      "image": "icon"
+    },
+    {
+      "id": "officer-6",
+      "name": "First Last",
+      "position": "Position",
+      "image": "icon"
+    },
+    {
+      "id": "officer-7",
+      "name": "First Last",
+      "position": "Position",
+      "image": "icon"
+    }
+  ],
+  "about": {
+    "description": "\"Korean Pop Dance Club\" (otherwise known as Ganji) was established for the purpose of exploring Korean Culture and learning K-Pop choreography in a relaxed, non-judgmental environment. We hold weekly workshops that are open to anyone in the UMD community and no prior dance experience is required! We also perform at various events across campus like TASA’s Night Market, JASA’s Taste of Japan, and more!",
+    "image": "group",
+    "workshopImage": "chungha",
+    "instagram": "https://www.instagram.com/ganjiumd/",
+    "discord": "",
+    "email": "",
+    "officerYear": "2025–2026"
+  }
+}

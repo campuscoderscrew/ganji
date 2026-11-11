@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import './siteNavbar.css';
-import logo from '../icon.jpg';
+import logo from '../ganjiLogoWhite.png';
 
 const navItems = [
   { href: '/about', label: 'About', match: '/about' },

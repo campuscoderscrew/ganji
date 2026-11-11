@@ -40,6 +40,9 @@ permissions:
 jobs:
   sync-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+      HAS_TOKEN_WRITER: ${{ secrets.GH_PAT != '' }}
     environment:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
@@ -59,13 +62,14 @@ jobs:
         # changes, so a failure here should stop the deploy.
         run: npm run test:parser
 
+      - name: Test site models and GitHub saves
+        run: npm test -- --watchAll=false --runInBand
+
       - name: Sync Instagram
         id: sync
         # Skipped when no token is configured yet, so the site still builds and
         # deploys from whatever data is already committed.
-        if: ${{ secrets.IG_ACCESS_TOKEN != '' }}
-        env:
-          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+        if: ${{ env.IG_ACCESS_TOKEN != '' }}
         run: node scripts/sync-instagram.js --prune
 
       - name: Commit synced data
@@ -73,6 +77,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdir -p public/ig
           git add src/data/instagram.json public/ig
           if git diff --staged --quiet; then
             echo "No Instagram changes."
@@ -90,14 +95,16 @@ jobs:
         # straight days. Writing it back needs a PAT with secrets write access;
         # without one this step is skipped and the token must be renewed by
         # hand before it lapses. See docs/instagram-sync.md.
-        if: ${{ steps.sync.outputs.refreshed_token != '' && secrets.GH_PAT != '' }}
+        if: ${{ steps.sync.outputs.refreshed_token != '' && env.HAS_TOKEN_WRITER == 'true' }}
         env:
           GH_TOKEN: ${{ secrets.GH_PAT }}
+          REFRESHED_IG_TOKEN: ${{ steps.sync.outputs.refreshed_token }}
+          TOKEN_EXPIRES_AT: ${{ steps.sync.outputs.token_expires_at }}
         run: |
           gh secret set IG_ACCESS_TOKEN \
-            --body "${{ steps.sync.outputs.refreshed_token }}" \
+            --body "$REFRESHED_IG_TOKEN" \
             --repo "$GITHUB_REPOSITORY"
-          echo "Token renewed, valid until ${{ steps.sync.outputs.token_expires_at }}"
+          echo "Token renewed, valid until $TOKEN_EXPIRES_AT"
 
       - name: Build site
         env:

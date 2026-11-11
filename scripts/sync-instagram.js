@@ -25,6 +25,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const { parseCaption } = require('./lib/parse-caption.js');
+const { normalizeHandle, getConnection } = require('./lib/instagram-local.js');
 const {
   fetchAllMedia,
   fetchProfile,
@@ -46,7 +47,10 @@ const IMAGE_URL_PREFIX = '/ig';
 
 function parseArgs(argv) {
   const args = new Set(argv.slice(2));
+  const handleIndex = argv.indexOf('--handle');
+  if (handleIndex >= 0 && (!argv[handleIndex+1] || argv[handleIndex+1].startsWith('--'))) throw new Error('Provide the Instagram handle after --handle.');
   return {
+    handle: handleIndex >= 0 ? normalizeHandle(argv[handleIndex+1]) : process.env.IG_HANDLE ? normalizeHandle(process.env.IG_HANDLE) : null,
     fixture: args.has('--fixture'),
     noImages: args.has('--no-images'),
     prune: args.has('--prune'),
@@ -212,10 +216,11 @@ async function renewToken(token) {
 
 async function main() {
   const options = parseArgs(process.argv);
-  const token = process.env.IG_ACCESS_TOKEN;
+  const token = process.env.IG_ACCESS_TOKEN || (!options.fixture && options.handle ? getConnection(ROOT, options.handle)?.token : null);
 
   if (!options.fixture && !token) {
-    console.error('IG_ACCESS_TOKEN is not set.');
+    console.error('No authorized Instagram connection is available.');
+    console.error('Open http://127.0.0.1:4317 for one-time account connection.');
     console.error('Run with --fixture to work offline, or see docs/instagram-sync.md.');
     process.exit(1);
   }
@@ -229,7 +234,8 @@ async function main() {
     account = { username: 'ganjiumd', id: 'fixture', account_type: 'MEDIA_CREATOR' };
   } else {
     account = await fetchProfile({ token });
-    console.log(`Authenticated as @${account.username} (${account.account_type})`);
+    if (options.handle && normalizeHandle(account.username) !== options.handle) throw new Error(`The authorized account is @${account.username}, not @${options.handle}. Connect the matching account first.`);
+    console.log(`Authenticated as @${account.username}`);
     rawMedia = await fetchAllMedia({ token });
   }
 
@@ -288,7 +294,7 @@ async function main() {
     for (const post of undated) {
       console.log(`  ${post.id}  ${JSON.stringify((post.title || '').slice(0, 48))}`);
     }
-    console.log('Add a date in src/data/overrides.js to place them on the calendar.');
+    console.log('Add a date in the admin dashboard to place them on the calendar.');
   }
 
   if (!options.fixture && !options.skipRefresh) {

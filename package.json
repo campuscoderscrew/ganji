@@ -18,13 +18,15 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node scripts/dev.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "sync:instagram": "node scripts/sync-instagram.js",
     "sync:fixture": "node scripts/sync-instagram.js --fixture",
-    "test:parser": "node --test \"scripts/__tests__/**/*.test.js\""
+    "test:parser": "node scripts/run-tests.js",
+    "test:e2e": "playwright test",
+    "instagram:connect": "node scripts/instagram-connect.js"
   },
   "eslintConfig": {
     "extends": [
@@ -43,5 +45,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.0"
   }
 }

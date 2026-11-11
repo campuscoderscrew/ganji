@@ -266,3 +266,21 @@ Useful flags on `scripts/sync-instagram.js`:
 | `--no-images` | Metadata only, skip downloads. |
 | `--prune` | Delete images belonging to posts that no longer exist. |
 | `--no-refresh` | Skip the token renewal step. |
+
+
+### Workflow validation and manual content
+
+Secret-dependent step conditions now reference job environment variables, rather than reading the `secrets` context directly in `if:`. Token updates pass through environment variables instead of shell interpolation. The pipeline also runs the site model/GitHub-save tests before syncing and deploying. Parser/workflow tests use explicit expanded file paths so the command works on the workflow's Node 20 runtime and Windows.
+
+The sync continues to write only generated Instagram metadata and downloaded Instagram images. Photo uploads, officer details, About content, performance entries, and manual event corrections are stored separately in `src/data/admin-data.json` and `public/uploads/`.
+
+
+### Local account connection screen
+
+`npm start` now starts the existing React site plus a loopback-only Instagram connection helper at http://127.0.0.1:4317. A link is available on the local Admin screen. Alternatively run `npm run instagram:connect` alongside an already-running site.
+
+Enter a test handle and authorize it once using that account’s Instagram Login API access token. The helper checks the profile username and media-read permission before saving anything. Credentials are saved in `.instagram.local.json`, which is ignored by Git and is never imported into the frontend. Each account requires its own authorization. Public handle-only lookup is not supported by this authenticated API.
+
+After that first connection, enter the handle and press **Sync posts**, or run `npm run sync:instagram -- --handle @your_account --no-refresh`. No token needs to be pasted again. Syncing validates the authorized username before writing the feed, and the local helper does not publish or push to GitHub. A saved token must be renewed or reconnected when it expires; the GitHub Actions secret remains separately configured for scheduled production syncs.
+
+Meta account registration, sign-in verification, account permissions, and token generation require action by the account owner. A local helper cannot replace those Meta authorization steps.

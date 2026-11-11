@@ -27,3 +27,12 @@ yarn-error.log*
 # so the downloaded images are the only durable copy.
 public/ig/*.part
 .env
+
+# Browser test output
+test-results/
+playwright-report/
+.npm-cache/
+
+# Local Instagram account authorization; never commit credentials
+.instagram.local.json
+.instagram.local.json.tmp
