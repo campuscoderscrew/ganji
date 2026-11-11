@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
-import {
-  motion,
-  AnimatePresence,
-  useMotionValue,
-  useSpring,
-  useTransform,
-} from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import './archive.css';
 import PageTemplate from '../components/PageTemplate';
 import { useEventData } from '../data/events.js';
@@ -19,50 +13,17 @@ function ArchivePage() {
     archiveData.length > 0 ? archiveData[0].month : null
   );
 
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const springConfig = { stiffness: 60, damping: 20 };
-  const parallaxX = useSpring(useTransform(mouseX, [-1, 1], [-24, 24]), springConfig);
-  const parallaxY = useSpring(useTransform(mouseY, [-1, 1], [-24, 24]), springConfig);
-  const parallaxXSlow = useSpring(useTransform(mouseX, [-1, 1], [14, -14]), springConfig);
-  const parallaxYSlow = useSpring(useTransform(mouseY, [-1, 1], [14, -14]), springConfig);
-
-  const handleMouseMove = (e) => {
-    const { innerWidth, innerHeight } = window;
-    mouseX.set((e.clientX / innerWidth - 0.5) * 2);
-    mouseY.set((e.clientY / innerHeight - 0.5) * 2);
-  };
-
   const toggleMonth = (month) => {
     setExpandedMonth((current) => (current === month ? null : month));
   };
 
   return (
-    <div className="archive-page" onMouseMove={handleMouseMove}>
-      <motion.div
-        className="archive-bubble archive-bubble-1"
-        animate={{ y: [0, -22, 0], x: [0, 12, 0] }}
-        transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
-      />
-      <motion.div
-        className="archive-bubble archive-bubble-2"
-        animate={{ y: [0, 18, 0], x: [0, -14, 0] }}
-        transition={{ duration: 11, repeat: Infinity, ease: 'easeInOut' }}
-      />
-
-      <motion.div
-        className="archive-bubble archive-bubble-fg-1"
-        style={{ x: parallaxX, y: parallaxY }}
-      />
-      <motion.div
-        className="archive-bubble archive-bubble-fg-2"
-        style={{ x: parallaxXSlow, y: parallaxYSlow }}
-      />
-
-      <span className="archive-sparkle archive-sparkle-1">✦</span>
-      <span className="archive-sparkle archive-sparkle-2">✧</span>
-      <span className="archive-sparkle archive-sparkle-3">✦</span>
-
+    // The page's own orbs and sparkles used to live here. Their styles were
+    // removed when the shared background moved into PageBackground (rendered
+    // by PageTemplate), which left this markup unstyled -- the sparkle spans
+    // fell back to static position and rendered as literal characters in the
+    // top-left corner.
+    <div className="archive-page">
       <PageTemplate>
         <header className="archive-header">
           <motion.p
