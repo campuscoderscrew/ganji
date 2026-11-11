@@ -1,246 +1,442 @@
-/* General styles */
-body {
-  background-color: #ededff;
-  min-height: 100vh;
-  margin: 0;
-  font-family: Arial, sans-serif;
+/* Events calendar.
+   Everything here is scoped under .events-page or .event-dialog. The previous
+   version styled bare body, h1 and h2 and claimed generic names like .wrapper,
+   .calendar and .modal -- CRA bundles all CSS into one global sheet, so those
+   rules were reaching every other page on the site. */
+
+.events-page .events-heading {
+  padding-bottom: 32px;
 }
 
-.events-page {
-  min-height: 100vh;
-  padding-top: var(--gnav-height, 90px);
-  box-sizing: border-box;
+/* --- calendar card -------------------------------------------------------- */
+
+.events-calendar-section {
+  position: relative;
+  z-index: 2;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 20px 72px;
 }
 
-/* Headings */
-h1 {
-  color: #671bda;
+.events-calendar {
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  box-shadow: var(--card-shadow);
+  color: var(--text-on-dark);
 }
 
-h2 {
-  color: #1f1f1f;
-}
-
-.heading-container {
-  max-width: 800px;   /* same as .calendar or .wrapper */
-  margin: 0 auto;     /* centers it horizontally */
-  padding: 56px 0 32px;
-  padding-left: 0;    /* no extra padding */
-}
-
-.heading-container h1,
-.heading-container h2 {
-  text-align: left;   /* ensure text is left-aligned */
-  padding-left: 0;    /* remove previous padding */
-}
-
-/* Calendar section */
-.calendar {
+.events-calendar-header {
   display: flex;
   align-items: center;
-  justify-content: center;
-  min-height: 40vh;
-  color: #1f1f1f;
-}
-
-.wrapper {
-  width: 735px;
-  background: #fff;
-  border-radius: 10px;
-  transform: scale(1.05);
-  transform-origin: top center;
-  padding-bottom: 20px;
-}
-
-
-.wrapper header {
-  display: flex;
-  align-items: center;
-  padding: 25px 30px 10px;
   justify-content: space-between;
+  gap: 16px;
+  padding: 24px 26px 18px;
 }
 
-header .current-date {
-  font-size: 2rem;
-  font-weight: 500;
-}
-
-header .icons span {
-  height: 38px;
-  width: 38px;
-  margin: 0 1px;
-  cursor: pointer;
-  text-align: center;
-  line-height: 38px;
-  border-radius: 50%;
-  background: #f2f2f2;
-  display: inline-block;
-  font-size: 24px;
-  user-select: none;
-}
-
-header .icons span:last-child {
-  margin-right: -10px;
-}
-
-/* Weekday headings (Sun, Mon, ...) */
-.daysOfWeek {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr); 
-  text-align: center;
-  padding: 0 20px; 
+.events-current-date {
   margin: 0;
-  list-style: none;
-  font-weight: bold;
+  font-family: var(--heading-font);
+  font-size: 2.4rem;
+  font-style: italic;
+  line-height: 1;
+  /* Italic glyphs lean past the end of their measured box, and background-clip
+     crops the gradient to that box, so the last character loses its tail
+     without a little room to overhang into. */
+  padding-right: 0.14em;
+  background: linear-gradient(60deg, #eaa0ff 30%, #a79bff 75%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
-
-/* Grid of actual days */
-.days {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 2px;
-  padding: 0 20px; 
-  margin: 0;
-  list-style: none;
-  text-align: left;
-}
-
-
-/* Individual day cell */
-.days li {
-  padding: 8px;
-  height: 100px;
-  box-sizing: border-box;
-  background-color: #ffffff;
-  border: 1px solid #ddd;
-
+.events-month-nav {
   display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  font-size: 16px;
-  flex-direction: column;
-  gap: 0px;
+  gap: 8px;
 }
 
-.days li span {
-    display: inline-block;
-    width: 30px;
-    height: 30px;
-    line-height: 30px;
-    text-align: center;
-    border-radius: 50%;
-}
-
-.day-number {
-  display: inline-block;
-  width: 30px;
-  height: 30px;
-  line-height: 30px;
-  text-align: center;
-  border-radius: 50%;
-}
-
-.today-circle {
-    background-color: #955ee8;
-    color: white;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: auto;
-}
-
-.event {
-  display: inline;
-  margin-top: 4px;
-}
-
-.event-link {
-  display: inline;
-  white-space: nowrap;
-  margin-top: 4px;
-  font-size: 0.75em;
-  color: #c877ee;
-  text-decoration: none;
-}
-
-.event-link:hover {
-  color: #aa5ce6;
-  text-decoration: underline;
-}
-
-.modal {
-  display: none; /* This will be toggled in React */
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.5);
-  display: flex;
-  justify-content: center;
+.events-month-nav button {
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid #ffffff1f;
+  border-radius: 50%;
+  background: #ffffff0f;
+  color: var(--text-on-dark);
+  cursor: pointer;
+  transition: background 0.18s ease, transform 0.18s ease;
 }
 
-/* Modal content wrapper */
-.modal-content {
+.events-month-nav button:hover {
+  background: #7c6cf64d;
+  transform: translateY(-1px);
+}
+
+/* --- grid ----------------------------------------------------------------- */
+
+.events-weekdays,
+.events-days {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.events-weekdays {
+  padding: 0 18px 10px;
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #c9bdffb3;
+}
+
+/* Full weekday names on wide screens, single letters once a column is too
+   narrow to hold them. */
+.events-weekdays li > span[aria-hidden='true'] {
+  display: none;
+}
+
+.events-days {
+  gap: 4px;
+  padding: 0 18px 24px;
+}
+
+.events-day {
   display: flex;
-  width: 80%;
-  max-width: 700px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  min-height: 104px;
+  padding: 8px;
+  background: #ffffff08;
+  border: 1px solid #ffffff12;
   border-radius: 10px;
-  overflow: hidden; /* ensures border-radius works on children */
-  background-color: #fff;
+  font-size: 0.9rem;
 }
 
-/* Left section: image */
-.modal-left {
-  flex: 1;
-  background-color: #f0f0f0; /* optional fallback */
+.events-day-empty {
+  background: none;
+  border-color: transparent;
 }
 
-.modal-left img {
+.events-day-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  font-size: 0.82rem;
+  color: #e9e4ff;
+}
+
+.events-day-today .events-day-number {
+  background: linear-gradient(135deg, #7c6cf6, #c877ee);
+  font-weight: 700;
+  color: #fff;
+}
+
+.events-day-today {
+  border-color: #7c6cf680;
+}
+
+/* --- event chips ---------------------------------------------------------- */
+
+.events-chip {
+  width: 100%;
+  padding: 4px 7px;
+  border: 0;
+  border-left: 3px solid var(--chip-accent, #c877ee);
+  border-radius: 6px;
+  background: #ffffff14;
+  color: #f1ecff;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: left;
+  /* Without this the cell's fixed height squeezes the chip and overflow
+     clips it through the middle of a line. */
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: background 0.18s ease;
+}
+
+/* Titles come from Instagram captions and can run long; two lines keeps one
+   runaway event from stretching the whole week. */
+.events-chip-label {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+
+.events-chip:hover {
+  background: #ffffff2e;
+}
+
+.events-chip-performance {
+  --chip-accent: #eaa0ff;
+}
+
+.events-chip-workshop {
+  --chip-accent: #a0d8ff;
+}
+
+.events-chip-competition {
+  --chip-accent: #ffd67a;
+}
+
+/* --- month list (phones only) --------------------------------------------- */
+
+.events-month-list {
+  display: none;
+  margin: 0;
+  padding: 4px 14px 22px;
+  list-style: none;
+}
+
+.events-month-list li + li {
+  margin-top: 6px;
+}
+
+.events-month-list button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ffffff12;
+  border-radius: 10px;
+  background: #ffffff0a;
+  color: var(--text-on-dark);
+  text-align: left;
+  cursor: pointer;
+}
+
+.events-month-list-day {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: var(--chip-accent, #c877ee);
+  color: #1b1626;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.events-month-list-title {
+  font-size: 0.86rem;
+  font-weight: 600;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+/* --- event dialog --------------------------------------------------------- */
+
+.event-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: #1f183890;
+  backdrop-filter: blur(6px);
+}
+
+.event-dialog-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  max-width: 760px;
+  max-height: calc(100dvh - 48px);
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  box-shadow: 0 24px 60px #15102e66;
+  color: var(--text-on-dark);
+}
+
+.event-dialog-media {
+  background: #17131e;
+}
+
+.event-dialog-media img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-/* Right section: text */
-.modal-right {
-  flex: 1;
-  background-color: #bdbdf0; /* purple background */
-  color: black;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+.event-dialog-body {
+  position: relative;
+  overflow-y: auto;
+  padding: 30px 28px;
 }
 
-.modal-right h2 {
-  margin-top: 0;
+.event-dialog-body h2 {
+  margin: 0 0 14px;
+  font-size: 1.5rem;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
 }
 
-.modal-right p {
-  white-space: pre-line; /* handles \n newlines in description */
-}
-
-/* Close button */
-.close-button {
-  align-self: flex-end;
+.event-dialog-close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 50%;
+  background: #ffffff14;
+  color: var(--text-on-dark);
+  font-size: 22px;
+  line-height: 1;
   cursor: pointer;
-  font-size: 24px;
-  margin-bottom: 10px;
 }
 
-.close-button:hover {
-  color: #ffcccc;
+.event-dialog-close:hover {
+  background: #ffffff2e;
 }
 
-@media (max-width: 640px) {
-  .heading-container {
-    padding-top: 42px;
+.event-dialog-facts {
+  margin: 0 0 16px;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.event-dialog-facts li {
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: #7c6cf629;
+  font-size: 0.78rem;
+  color: #d7cfff;
+}
+
+.event-dialog-description {
+  margin: 0 0 20px;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  /* Captions carry their own line breaks and are worth preserving. */
+  white-space: pre-line;
+  color: #e4dff5cc;
+  overflow-wrap: anywhere;
+}
+
+.event-dialog-link {
+  font-size: 0.85rem;
+}
+
+/* --- small screens -------------------------------------------------------- */
+
+@media (max-width: 860px) {
+  .events-weekdays li > span[aria-hidden='true'] {
+    display: inline;
+  }
+
+  .events-weekday-full {
+    display: none;
+  }
+
+  .events-day {
+    min-height: 78px;
+    padding: 6px;
+  }
+
+  .events-chip {
+    font-size: 0.62rem;
+  }
+
+  .events-chip-label {
+    -webkit-line-clamp: 1;
+  }
+
+  .event-dialog-card {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+
+  .event-dialog-media {
+    max-height: 200px;
+  }
+}
+
+@media (max-width: 560px) {
+  .events-calendar-section {
+    padding: 0 12px 56px;
+  }
+
+  .events-calendar-header {
+    padding: 20px 18px 14px;
+  }
+
+  .events-current-date {
+    font-size: 1.9rem;
+  }
+
+  .events-weekdays,
+  .events-days {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .events-days {
+    gap: 3px;
+  }
+
+  .events-day {
+    min-height: 62px;
+    border-radius: 8px;
+  }
+
+  .events-day-number {
+    width: 22px;
+    height: 22px;
+    font-size: 0.74rem;
+  }
+
+  /* A cell this narrow cannot hold a readable title -- a one-character
+     truncation says less than a dot does. The grid shows that something is
+     happening; the list underneath says what. */
+  .events-chip {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--chip-accent, #c877ee);
+  }
+
+  .events-chip-label {
+    display: none;
+  }
+
+  .events-month-list {
+    display: block;
+  }
+
+  .event-dialog {
+    padding: 12px;
+  }
+
+  .event-dialog-body {
+    padding: 24px 20px;
   }
 }
