@@ -1,0 +1,86 @@
+{
+  "_comment": "Offline stand-in for GET /me/media. Shape matches the real API response exactly, so sync-instagram.js runs identically against it. Emoji are JSON \\u escapes to keep this file pure ASCII. Run: npm run sync:instagram -- --fixture",
+  "data": [
+    {
+      "id": "17999000000000001",
+      "caption": "Like eenie 👆️meenie👆️minie 👆️moe👆️\n\nCome learn ⭐️❤️EENIE MEENIE by CHUNG HA❤️⭐️ taught by ✨@ije.526✨ THIS THURSDAY ‼️\n\nWORKSHOP DETAILS ‼️\n🗓️: Tuesday, July 1st\n⏰: 7-8PM\n📍: Activities Room near Terpzone (STAMP)\n\n#ganji #umd #kpop #kpopdance #workshop",
+      "media_type": "IMAGE",
+      "media_url": "https://example.invalid/fixture/eenie-meenie.jpg",
+      "permalink": "https://www.instagram.com/p/FIXTURE0001/",
+      "timestamp": "2025-06-26T18:04:11+0000"
+    },
+    {
+      "id": "17999000000000002",
+      "caption": "GANJI AT TERP TALENT 🔥🔥\n\nWe'll be performing Daydream by ENHYPEN on the big stage!! Come support us 💜\n\nDETAILS\n📅: Saturday, April 12th\n⏰: 6:30-9PM\n📍: Grand Ballroom, STAMP\n🎟️: Free with UMD ID\n\n#ganji #umd #enhypen #performance",
+      "media_type": "CAROUSEL_ALBUM",
+      "permalink": "https://www.instagram.com/p/FIXTURE0002/",
+      "timestamp": "2025-04-02T21:15:00+0000",
+      "children": {
+        "data": [
+          {
+            "id": "17999000000000002001",
+            "media_type": "IMAGE",
+            "media_url": "https://example.invalid/fixture/terp-talent-1.jpg"
+          },
+          {
+            "id": "17999000000000002002",
+            "media_type": "IMAGE",
+            "media_url": "https://example.invalid/fixture/terp-talent-2.jpg"
+          }
+        ]
+      }
+    },
+    {
+      "id": "17999000000000003",
+      "caption": "ULTIMATE SHOWCASE 2025 🏆\n\nGanji is competing at Ultimate Showcase this year! Prelims are closed but finals are open to the public.\n\n🗓️: Saturday, April 26th\n⏰: 7PM doors, 8PM start\n📍: Ritchie Coliseum\n💵: $10 presale / $15 at door\n\n#ganji #umd #competition #ultimateshowcase",
+      "media_type": "IMAGE",
+      "media_url": "https://example.invalid/fixture/ultimate-showcase.jpg",
+      "permalink": "https://www.instagram.com/p/FIXTURE0003/",
+      "timestamp": "2025-04-14T16:30:00+0000"
+    },
+    {
+      "id": "17999000000000004",
+      "caption": "workshop #2 of the semester 🫡\n\ncome learn ✨Gnarly✨ by KATSEYE taught by @ganji.dance\n\n🗓️: Thursday, April 17th\n⏰: 8-9:30PM\n📍: Eppley Dance Studio\n\n#ganji #umd #katseye #workshop #kpopdance",
+      "media_type": "VIDEO",
+      "media_url": "https://example.invalid/fixture/gnarly.mp4",
+      "thumbnail_url": "https://example.invalid/fixture/gnarly-thumb.jpg",
+      "permalink": "https://www.instagram.com/p/FIXTURE0004/",
+      "timestamp": "2025-04-10T19:45:00+0000"
+    },
+    {
+      "id": "17999000000000005",
+      "caption": "MEET YOUR 2025-2026 E-BOARD 💜✨\n\nswipe to meet the people running Ganji this year!! so excited for what's ahead 🫡\n\n#ganji #umd #eboard",
+      "media_type": "CAROUSEL_ALBUM",
+      "permalink": "https://www.instagram.com/p/FIXTURE0005/",
+      "timestamp": "2025-09-02T15:00:00+0000",
+      "children": {
+        "data": [
+          {
+            "id": "17999000000000005001",
+            "media_type": "IMAGE",
+            "media_url": "https://example.invalid/fixture/eboard-1.jpg"
+          },
+          {
+            "id": "17999000000000005002",
+            "media_type": "IMAGE",
+            "media_url": "https://example.invalid/fixture/eboard-2.jpg"
+          }
+        ]
+      }
+    },
+    {
+      "id": "17999000000000006",
+      "caption": "thank you to everyone who came out this semester 💜 see you in the fall!!\n\n#ganji #umd",
+      "media_type": "IMAGE",
+      "media_url": "https://example.invalid/fixture/semester-wrap.jpg",
+      "permalink": "https://www.instagram.com/p/FIXTURE0006/",
+      "timestamp": "2025-05-14T22:10:00+0000"
+    }
+  ],
+  "paging": {
+    "cursors": {
+      "before": "FIXTURE_BEFORE",
+      "after": "FIXTURE_AFTER"
+    }
+  }
+}

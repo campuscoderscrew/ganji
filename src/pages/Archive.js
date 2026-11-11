@@ -8,23 +8,15 @@ import {
 } from 'motion/react';
 import './archive.css';
 import PageTemplate from '../components/PageTemplate';
-
-const archiveData = [
-  {
-    month: 'April 2025',
-    events: [
-      { type: 'PERFORMANCE', title: 'Daydream', artist: 'ENHYPEN', link: '#' },
-      { type: 'PERFORMANCE', title: 'Pandora', artist: 'MAVE', link: '#' },
-      { type: 'WORKSHOP', title: 'Gnarly', artist: 'KATSEYE', link: '#' },
-      { type: 'COMPETITION', title: 'Ultimate Showcase', artist: null, link: '#' },
-    ],
-  },
-  { month: 'May 2025', events: [] },
-  { month: 'June 2025', events: [] },
-];
+import { archiveMonths as archiveData } from '../data/events.js';
+import SyncStatus from '../components/SyncStatus';
 
 function ArchivePage() {
-  const [expandedMonth, setExpandedMonth] = useState(archiveData[0].month);
+  // The newest month is listed first and opens by default. An empty archive
+  // leaves nothing expanded rather than crashing on archiveData[0].
+  const [expandedMonth, setExpandedMonth] = useState(
+    archiveData.length > 0 ? archiveData[0].month : null
+  );
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -146,6 +138,9 @@ function ArchivePage() {
                             <motion.a
                               className="archive-event-row"
                               href={event.link}
+                              // Rows link out to the original Instagram post.
+                              target="_blank"
+                              rel="noreferrer"
                               key={index}
                               initial={{ opacity: 0, x: -12 }}
                               animate={{ opacity: 1, x: 0 }}
@@ -175,6 +170,8 @@ function ArchivePage() {
             );
           })}
         </div>
+
+        <SyncStatus />
       </PageTemplate>
     </div>
   );

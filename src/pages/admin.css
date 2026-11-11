@@ -1,0 +1,444 @@
+/* Admin dashboard.
+   Shares the site's palette and type, but uses light cards rather than the
+   public pages' dark glass: this is a form-heavy tool that people will stare
+   at while typing, and dark inputs make that harder to read. */
+
+.admin-page {
+  min-height: 100vh;
+  padding: 40px 24px 80px;
+  box-sizing: border-box;
+  background: radial-gradient(circle at 20% 0%, #e4ddff, #ededff 45%, #e6e6fb);
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  color: #241b3d;
+}
+
+.admin-header {
+  max-width: 920px;
+  margin: 0 auto 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.admin-header h1 {
+  margin: 0;
+  font-family: 'Caveat', cursive;
+  font-size: 2.6rem;
+  font-weight: 700;
+  background: linear-gradient(60deg, #eaa0ff 40%, #7c6cf6 70%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.admin-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+.admin-user img {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+}
+
+/* --- cards ---------------------------------------------------------------- */
+
+.admin-card {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 28px;
+  box-sizing: border-box;
+  background: #fff;
+  border: 1px solid rgba(124, 108, 246, 0.18);
+  border-radius: 20px;
+  box-shadow: 0 12px 32px rgba(52, 25, 110, 0.12);
+}
+
+.admin-card h2 {
+  margin: 0 0 10px;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.admin-lede {
+  margin: 0 0 18px;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: rgba(36, 27, 61, 0.72);
+}
+
+/* --- sign in -------------------------------------------------------------- */
+
+.admin-steps {
+  margin: 0 0 22px;
+  padding-left: 20px;
+  font-size: 0.9rem;
+  line-height: 1.75;
+  color: rgba(36, 27, 61, 0.82);
+}
+
+.admin-steps code {
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(124, 108, 246, 0.12);
+  font-size: 0.85em;
+}
+
+.admin-steps a {
+  color: #671bda;
+  font-weight: 600;
+}
+
+.admin-signin-form {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.admin-signin-form .admin-field {
+  flex: 1;
+  min-width: 240px;
+}
+
+.admin-note {
+  margin: 20px 0 0;
+  padding-top: 18px;
+  border-top: 1px solid rgba(124, 108, 246, 0.14);
+  font-size: 0.82rem;
+  line-height: 1.65;
+  color: rgba(36, 27, 61, 0.58);
+}
+
+/* --- fields --------------------------------------------------------------- */
+
+.admin-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.admin-field > span {
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(36, 27, 61, 0.55);
+}
+
+.admin-field input,
+.admin-field select,
+.admin-field textarea {
+  padding: 11px 13px;
+  border: 1px solid rgba(124, 108, 246, 0.26);
+  border-radius: 11px;
+  background: #fbfaff;
+  font-family: inherit;
+  font-size: 0.92rem;
+  color: #241b3d;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.admin-field textarea {
+  resize: vertical;
+  line-height: 1.55;
+}
+
+.admin-field input:focus,
+.admin-field select:focus,
+.admin-field textarea:focus {
+  outline: 2px solid rgba(124, 108, 246, 0.45);
+  outline-offset: 1px;
+  border-color: transparent;
+}
+
+/* --- buttons -------------------------------------------------------------- */
+
+.admin-button {
+  padding: 11px 22px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(60deg, #7c6cf6, #c877ee);
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+
+.admin-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.admin-button-ghost {
+  padding: 8px 14px;
+  border: 1px solid rgba(124, 108, 246, 0.3);
+  border-radius: 999px;
+  background: transparent;
+  color: #4b3a7a;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.admin-button-ghost:hover:not(:disabled) {
+  background: rgba(124, 108, 246, 0.1);
+}
+
+.admin-button-ghost:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.admin-button-danger {
+  color: #b3246b;
+  border-color: rgba(179, 36, 107, 0.3);
+}
+
+.admin-button-danger:hover:not(:disabled) {
+  background: rgba(179, 36, 107, 0.08);
+}
+
+/* --- toolbar -------------------------------------------------------------- */
+
+.admin-toolbar {
+  max-width: 920px;
+  margin: 0 auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.admin-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.admin-dirty {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #671bda;
+}
+
+.admin-status {
+  max-width: 920px;
+  margin: 0 auto 16px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: rgba(124, 108, 246, 0.12);
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: #3d2a6b;
+}
+
+.admin-error {
+  margin: 14px 0 0;
+  font-size: 0.86rem;
+  font-weight: 500;
+  color: #b3246b;
+}
+
+/* --- list ----------------------------------------------------------------- */
+
+.admin-list {
+  max-width: 920px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-empty {
+  padding: 40px;
+  text-align: center;
+  color: rgba(36, 27, 61, 0.5);
+}
+
+.admin-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px;
+  background: #fff;
+  border: 1px solid rgba(124, 108, 246, 0.16);
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(52, 25, 110, 0.07);
+}
+
+/* Hidden events stay listed but read as switched off, so it is obvious they
+   exist and can be brought back. */
+.admin-row-hidden {
+  opacity: 0.5;
+}
+
+.admin-row-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.admin-row-text {
+  min-width: 0;
+}
+
+.admin-row-title {
+  margin: 0 0 3px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-row-artist {
+  font-weight: 400;
+  color: rgba(36, 27, 61, 0.6);
+}
+
+.admin-row-meta {
+  margin: 0;
+  font-size: 0.79rem;
+  color: rgba(36, 27, 61, 0.55);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-row-tags {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.admin-row-actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* --- badges and tags ------------------------------------------------------ */
+
+.admin-badge {
+  flex-shrink: 0;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  background: rgba(124, 108, 246, 0.16);
+  color: #5a48c4;
+}
+
+.admin-badge-performance {
+  background: rgba(200, 119, 238, 0.16);
+  color: #9b3fc4;
+}
+
+.admin-badge-workshop {
+  background: rgba(96, 170, 226, 0.18);
+  color: #2c6f9e;
+}
+
+.admin-badge-competition {
+  background: rgba(214, 160, 40, 0.18);
+  color: #8a6310;
+}
+
+.admin-tag {
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  background: rgba(36, 27, 61, 0.07);
+  color: rgba(36, 27, 61, 0.6);
+}
+
+.admin-tag-manual {
+  background: rgba(124, 108, 246, 0.14);
+  color: #5a48c4;
+}
+
+.admin-tag-edited {
+  background: rgba(234, 160, 255, 0.22);
+  color: #9b3fc4;
+}
+
+/* --- modal ---------------------------------------------------------------- */
+
+.admin-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 40px 20px;
+  overflow-y: auto;
+  background: rgba(31, 24, 56, 0.45);
+  backdrop-filter: blur(4px);
+}
+
+.admin-modal-card {
+  width: 100%;
+  max-width: 620px;
+  margin: 0;
+}
+
+.admin-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.admin-field-wide {
+  grid-column: 1 / -1;
+}
+
+.admin-hint {
+  margin: 16px 0 0;
+  font-size: 0.8rem;
+  color: rgba(36, 27, 61, 0.55);
+}
+
+.admin-modal-actions {
+  margin-top: 22px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* --- small screens -------------------------------------------------------- */
+
+@media (max-width: 720px) {
+  .admin-page {
+    padding: 28px 16px 60px;
+  }
+
+  .admin-row {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .admin-row-main {
+    flex-basis: 100%;
+  }
+
+  .admin-form-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,126 @@
+name: Sync Instagram and deploy
+
+# Syncing, building and deploying all happen in this one workflow on purpose.
+#
+# A workflow that commits using the default GITHUB_TOKEN does NOT trigger other
+# workflows -- GitHub blocks that to prevent loops. So the common split of
+# "sync workflow commits, deploy workflow fires on push" silently never
+# deploys. Keeping it in one job sidesteps that entirely.
+
+on:
+  # Instagram has no "new post" webhook -- its webhooks cover comments,
+  # mentions and messages, not your own account publishing -- so polling is the
+  # only option. Daily is plenty for a club announcing events days ahead.
+  schedule:
+    - cron: '0 9 * * *' # 09:00 UTC, ~5am ET
+
+  # Lets an officer who just posted push it live in ~2 minutes from the
+  # Actions tab, which covers the impatient case better than a tight cron.
+  workflow_dispatch:
+
+  # Escape hatch for the 60-day problem. GitHub disables *scheduled* workflows
+  # after 60 days of repository inactivity, which lands squarely in summer
+  # break for a student club. An external scheduler can POST a
+  # repository_dispatch instead; that rule does not apply to it.
+  repository_dispatch:
+    types: [sync-instagram]
+
+  push:
+    branches: [main]
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+permissions:
+  contents: write # commit the synced data back to the repo
+  pages: write
+  id-token: write
+
+jobs:
+  sync-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - run: npm ci
+
+      - name: Test caption parser
+        # The parser is the piece that silently drifts as caption style
+        # changes, so a failure here should stop the deploy.
+        run: npm run test:parser
+
+      - name: Sync Instagram
+        id: sync
+        # Skipped when no token is configured yet, so the site still builds and
+        # deploys from whatever data is already committed.
+        if: ${{ secrets.IG_ACCESS_TOKEN != '' }}
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+        run: node scripts/sync-instagram.js --prune
+
+      - name: Commit synced data
+        if: steps.sync.outcome == 'success'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/instagram.json public/ig
+          if git diff --staged --quiet; then
+            echo "No Instagram changes."
+          else
+            git commit -m "Sync Instagram content"
+            # Someone may have pushed while this ran; rebasing avoids failing
+            # the whole deploy over a trivial race.
+            git pull --rebase --autostash
+            git push
+          fi
+
+      - name: Store refreshed token
+        # The 60-day token is renewed on every run rather than near its
+        # deadline, so it can only expire if the sync itself has not run for 60
+        # straight days. Writing it back needs a PAT with secrets write access;
+        # without one this step is skipped and the token must be renewed by
+        # hand before it lapses. See docs/instagram-sync.md.
+        if: ${{ steps.sync.outputs.refreshed_token != '' && secrets.GH_PAT != '' }}
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          gh secret set IG_ACCESS_TOKEN \
+            --body "${{ steps.sync.outputs.refreshed_token }}" \
+            --repo "$GITHUB_REPOSITORY"
+          echo "Token renewed, valid until ${{ steps.sync.outputs.token_expires_at }}"
+
+      - name: Build site
+        env:
+          # Actions sets CI=true, which makes react-scripts treat every eslint
+          # warning as a build error. Two pre-existing warnings (an href="#" in
+          # About.js and an unused import in Officers.js) would fail the deploy
+          # on day one. Fix those two and this override can be dropped, which
+          # is worth doing -- warnings-as-errors in CI is a good default.
+          CI: false
+        run: |
+          npm run build
+          # GitHub Pages serves static files, so a direct hit on /archive or
+          # /admin would 404 -- those paths only exist in the client-side
+          # router. Pages falls back to 404.html for unknown paths, and
+          # because index.html is just the SPA shell, copying it there lets
+          # the router boot and read the pathname as normal.
+          cp build/index.html build/404.html
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: build
+
+      - id: deploy
+        uses: actions/deploy-pages@v4

@@ -1,3 +1,7 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow:
+Disallow: /admin
+
+# Keeping the dashboard out of search results is housekeeping, not a security
+# measure. It is a public page that does nothing until someone signs in with
+# their own GitHub token, and GitHub decides what they may change.

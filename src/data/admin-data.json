@@ -1,0 +1,7 @@
+{
+  "_README": "Edited by the admin dashboard at /admin. Safe to edit by hand too, but keep it valid JSON. 'overrides' patches posts pulled from Instagram, keyed by post id. 'manualEvents' are events with no Instagram post at all. Nothing here is ever overwritten by a sync.",
+  "updatedAt": null,
+  "updatedBy": null,
+  "overrides": {},
+  "manualEvents": []
+}

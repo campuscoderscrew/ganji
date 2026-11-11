@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, lazy, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './pages/events.css';
 import EventsPage from './App.js';
@@ -10,6 +10,10 @@ import WorkshopsPage from './pages/Workshops.js';
 import PerformancesPage from './pages/Performances.js';
 import AboutPage from './pages/About.js';
 import SiteNavbar from './components/SiteNavbar.js';
+
+// Loaded on demand so the dashboard and its GitHub client stay out of the
+// bundle every ordinary visitor downloads.
+const AdminPage = lazy(() => import('./pages/Admin.js'));
 
 function Router() {
   const [pathname, setPathname] = useState(window.location.pathname);
@@ -29,9 +33,18 @@ function Router() {
   }, []);
 
   const isNotFound = pathname === '/404';
+  // The dashboard is a tool, not a page of the site: it gets no navbar, and
+  // nothing links to it. That is for tidiness, not security -- the page is
+  // public and inert until someone supplies their own GitHub token.
+  const isAdmin = pathname === '/admin';
 
   const page =
     isNotFound ? <NotFoundPage /> :
+    isAdmin ? (
+      <Suspense fallback={null}>
+        <AdminPage />
+      </Suspense>
+    ) :
     pathname === '/about' ? <AboutPage /> :
     pathname === '/officers' ? <OfficersPage /> :
     pathname === '/archive' ? <ArchivePage /> :
@@ -44,7 +57,7 @@ function Router() {
   // each page. The 404 page intentionally has no navbar.
   return (
     <>
-      {!isNotFound && <SiteNavbar activePath={pathname} />}
+      {!isNotFound && !isAdmin && <SiteNavbar activePath={pathname} />}
       {page}
     </>
   );

@@ -1,0 +1,198 @@
+{
+  "syncedAt": "2026-10-22T01:17:38.725Z",
+  "account": {
+    "username": "ganjiumd",
+    "id": "fixture"
+  },
+  "fixture": true,
+  "postCount": 6,
+  "eventCount": 4,
+  "posts": [
+    {
+      "id": "17999000000000005",
+      "permalink": "https://www.instagram.com/p/FIXTURE0005/",
+      "timestamp": "2025-09-02T15:00:00.000Z",
+      "postedMonth": "2025-09",
+      "mediaType": "CAROUSEL_ALBUM",
+      "caption": "MEET YOUR 2025-2026 E-BOARD 💜✨\n\nswipe to meet the people running Ganji this year!! so excited for what's ahead 🫡\n\n#ganji #umd #eboard",
+      "image": null,
+      "images": [],
+      "isEvent": false,
+      "type": null,
+      "title": "MEET YOUR 2025-2026 E-BOARD",
+      "artist": null,
+      "date": null,
+      "dateText": null,
+      "time": null,
+      "location": null,
+      "cost": null,
+      "instructor": null,
+      "hashtags": [
+        "#ganji",
+        "#umd",
+        "#eboard"
+      ],
+      "confidence": {
+        "type": "none",
+        "title": "none",
+        "date": "none"
+      }
+    },
+    {
+      "id": "17999000000000001",
+      "permalink": "https://www.instagram.com/p/FIXTURE0001/",
+      "timestamp": "2025-06-26T18:04:11.000Z",
+      "postedMonth": "2025-06",
+      "mediaType": "IMAGE",
+      "caption": "Like eenie 👆️meenie👆️minie 👆️moe👆️\n\nCome learn ⭐️❤️EENIE MEENIE by CHUNG HA❤️⭐️ taught by ✨@ije.526✨ THIS THURSDAY ‼️\n\nWORKSHOP DETAILS ‼️\n🗓️: Tuesday, July 1st\n⏰: 7-8PM\n📍: Activities Room near Terpzone (STAMP)\n\n#ganji #umd #kpop #kpopdance #workshop",
+      "image": null,
+      "images": [],
+      "isEvent": true,
+      "type": "WORKSHOP",
+      "title": "Eenie Meenie",
+      "artist": "CHUNG HA",
+      "date": "2025-07-01",
+      "dateText": "Tuesday, July 1st",
+      "time": "7-8PM",
+      "location": "Activities Room near Terpzone (STAMP)",
+      "cost": null,
+      "instructor": "@ije.526",
+      "hashtags": [
+        "#ganji",
+        "#umd",
+        "#kpop",
+        "#kpopdance",
+        "#workshop"
+      ],
+      "confidence": {
+        "type": "high",
+        "title": "high",
+        "date": "high"
+      }
+    },
+    {
+      "id": "17999000000000006",
+      "permalink": "https://www.instagram.com/p/FIXTURE0006/",
+      "timestamp": "2025-05-14T22:10:00.000Z",
+      "postedMonth": "2025-05",
+      "mediaType": "IMAGE",
+      "caption": "thank you to everyone who came out this semester 💜 see you in the fall!!\n\n#ganji #umd",
+      "image": null,
+      "images": [],
+      "isEvent": false,
+      "type": null,
+      "title": "thank you to everyone who came out this semester see you in",
+      "artist": null,
+      "date": null,
+      "dateText": null,
+      "time": null,
+      "location": null,
+      "cost": null,
+      "instructor": null,
+      "hashtags": [
+        "#ganji",
+        "#umd"
+      ],
+      "confidence": {
+        "type": "none",
+        "title": "none",
+        "date": "none"
+      }
+    },
+    {
+      "id": "17999000000000003",
+      "permalink": "https://www.instagram.com/p/FIXTURE0003/",
+      "timestamp": "2025-04-14T16:30:00.000Z",
+      "postedMonth": "2025-04",
+      "mediaType": "IMAGE",
+      "caption": "ULTIMATE SHOWCASE 2025 🏆\n\nGanji is competing at Ultimate Showcase this year! Prelims are closed but finals are open to the public.\n\n🗓️: Saturday, April 26th\n⏰: 7PM doors, 8PM start\n📍: Ritchie Coliseum\n💵: $10 presale / $15 at door\n\n#ganji #umd #competition #ultimateshowcase",
+      "image": null,
+      "images": [],
+      "isEvent": true,
+      "type": "COMPETITION",
+      "title": "ULTIMATE SHOWCASE 2025",
+      "artist": null,
+      "date": "2025-04-26",
+      "dateText": "Saturday, April 26th",
+      "time": "7PM doors, 8PM start",
+      "location": "Ritchie Coliseum",
+      "cost": "$10 presale / $15 at door",
+      "instructor": null,
+      "hashtags": [
+        "#ganji",
+        "#umd",
+        "#competition",
+        "#ultimateshowcase"
+      ],
+      "confidence": {
+        "type": "high",
+        "title": "none",
+        "date": "high"
+      }
+    },
+    {
+      "id": "17999000000000004",
+      "permalink": "https://www.instagram.com/p/FIXTURE0004/",
+      "timestamp": "2025-04-10T19:45:00.000Z",
+      "postedMonth": "2025-04",
+      "mediaType": "VIDEO",
+      "caption": "workshop #2 of the semester 🫡\n\ncome learn ✨Gnarly✨ by KATSEYE taught by @ganji.dance\n\n🗓️: Thursday, April 17th\n⏰: 8-9:30PM\n📍: Eppley Dance Studio\n\n#ganji #umd #katseye #workshop #kpopdance",
+      "image": null,
+      "images": [],
+      "isEvent": true,
+      "type": "WORKSHOP",
+      "title": "Gnarly",
+      "artist": "KATSEYE",
+      "date": "2025-04-17",
+      "dateText": "Thursday, April 17th",
+      "time": "8-9:30PM",
+      "location": "Eppley Dance Studio",
+      "cost": null,
+      "instructor": "@ganji.dance",
+      "hashtags": [
+        "#2",
+        "#ganji",
+        "#umd",
+        "#katseye",
+        "#workshop",
+        "#kpopdance"
+      ],
+      "confidence": {
+        "type": "high",
+        "title": "high",
+        "date": "high"
+      }
+    },
+    {
+      "id": "17999000000000002",
+      "permalink": "https://www.instagram.com/p/FIXTURE0002/",
+      "timestamp": "2025-04-02T21:15:00.000Z",
+      "postedMonth": "2025-04",
+      "mediaType": "CAROUSEL_ALBUM",
+      "caption": "GANJI AT TERP TALENT 🔥🔥\n\nWe'll be performing Daydream by ENHYPEN on the big stage!! Come support us 💜\n\nDETAILS\n📅: Saturday, April 12th\n⏰: 6:30-9PM\n📍: Grand Ballroom, STAMP\n🎟️: Free with UMD ID\n\n#ganji #umd #enhypen #performance",
+      "image": null,
+      "images": [],
+      "isEvent": true,
+      "type": "PERFORMANCE",
+      "title": "Daydream",
+      "artist": "ENHYPEN",
+      "date": "2025-04-12",
+      "dateText": "Saturday, April 12th",
+      "time": "6:30-9PM",
+      "location": "Grand Ballroom, STAMP",
+      "cost": "Free with UMD ID",
+      "instructor": null,
+      "hashtags": [
+        "#ganji",
+        "#umd",
+        "#enhypen",
+        "#performance"
+      ],
+      "confidence": {
+        "type": "high",
+        "title": "high",
+        "date": "high"
+      }
+    }
+  ]
+}

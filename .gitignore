@@ -21,3 +21,9 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Instagram sync
+# public/ig/ IS committed on purpose: Instagram CDN URLs expire within days,
+# so the downloaded images are the only durable copy.
+public/ig/*.part
+.env

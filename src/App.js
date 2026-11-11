@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import './pages/events.css';
-import practiceImage from './Chungha.png';
 import holdImage from './ComingSoon.png';
 import PageTemplate from './components/PageTemplate';
+import { eventsByDate } from './data/events.js';
+import SyncStatus from './components/SyncStatus';
 
 function EventsPage() {
   const months = [
@@ -37,34 +38,6 @@ function EventsPage() {
     ...Array(startDay).fill(null),
     ...Array.from({ length: daysInMonth }, (_, i) => i + 1),
   ];
-
-  const eventMap = {
-    '2025-09-10': {
-      label: 'Eenie Meenie',
-      description:
-        'Like eenie ☝️meenie☝️minie ☝️moe☝️\n\nCome learn ⭐️❤️EENIE MEENIE by CHUNG HA❤️⭐️ taught by ✨@ije.526✨ THIS THURSDAY ‼️\n\nWORKSHOP DETAILS ‼️\n🗓️: Tuesday, July 1st\n⏰: 7-8PM\n📍: Activities Room near Terpzone (STAMP)',
-      color: 'purple',
-      image: practiceImage,
-    },
-    '2025-09-16': {
-      label: 'Practice ?',
-      description: 'Description text here',
-      color: 'purple',
-      image: holdImage,
-    },
-    '2025-09-30': {
-      label: 'Practice ?',
-      description: 'Description text here',
-      color: 'purple',
-      image: holdImage,
-    },
-    '2025-10-01': {
-      label: 'Practice ?',
-      description: 'Description text here',
-      color: 'purple',
-      image: holdImage,
-    },
-  };
 
   const openModal = (title, description, image) =>
     setModalData({ title, description, image }) || setIsModalOpen(true);
@@ -113,22 +86,30 @@ function EventsPage() {
                   ? `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
                   : null;
 
-                const event = formattedDate ? eventMap[formattedDate] : null;
+                // A day can hold more than one event -- two posts announcing
+                // different things on the same date both belong here.
+                const dayEvents = (formattedDate && eventsByDate[formattedDate]) || [];
 
                 return (
                   <li key={index} className={isToday ? 'today' : ''}>
                     {dayNumber}
-                    {event && <span className="dot-highlight"></span>}
-                    {event && (
-                      <div className="event">
+                    {dayEvents.length > 0 && <span className="dot-highlight"></span>}
+                    {dayEvents.map((event) => (
+                      <div className="event" key={event.id}>
                         <span
                           className="event-link"
-                          onClick={() => openModal(event.label, event.description, event.image)}
+                          onClick={() =>
+                            openModal(
+                              event.label,
+                              event.description,
+                              event.image || holdImage
+                            )
+                          }
                         >
                           {event.label}
                         </span>
                       </div>
-                    )}
+                    ))}
                   </li>
                 );
               })}
@@ -152,6 +133,8 @@ function EventsPage() {
             </div>
           </div>
         )}
+
+        <SyncStatus />
       </PageTemplate>
     </div>
   );
